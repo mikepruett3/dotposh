@@ -7,5 +7,6 @@
 **Needs to be run as Administrator** :
 
     mklink %UserProfile%\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1 %UserProfile%\dotposh\profile.ps1
+    mklink /D %UserProfile%\Documents\WindowsPowerShell\modules\ %UserProfile%\dotposh\modules
 
 ## More...
