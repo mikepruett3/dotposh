@@ -1,7 +1,7 @@
 # Set-ExecutionPolicy Unrestricted -- From Administrator Console
 
 # Module Imports
-Import-Module PSReadLine
+#Import-Module PSReadLine
 
 # Setting environment variables
 $arch = "$Env:Processor_Architecture"
