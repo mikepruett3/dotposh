@@ -4,10 +4,11 @@
 Import-Module PSReadLine
 
 # Setting environment variables
-$Arch = $Env:PROCESSOR_ARCHITECTURE
-$UserProfile = $Env:USERPROFILE
-$UserName = $Env:USERNAME
-$AppData = $Env:APPDATA
+$arch = "$Env:Processor_Architecture"
+$userprofile = "$Env:UserProfile"
+$username = "$Env:UserName"
+$appdata = "$Env:AppData"
+$dotposh = "$Env:UserProfile\dotposh"
 
 # Shell History Settings
 $MaximumHistoryCount = 2048
@@ -17,6 +18,9 @@ $truncateLogLines = 100
 # Shell customization settings
 Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
+
+# Import Functions
+Import-Module "$dotposh\functions\*.ps1"
 
 # Unzip function
 Function unzip ([string]$filename){
@@ -34,29 +38,6 @@ Function work-history {
     $history > $histfile
     $history | select -Unique | Convertfrom-csv -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
 }
-
-# Get-RedirectedUrl Function - http://stackoverflow.com/questions/25125818/powershell-invoke-webrequest-how-to-automatically-use-original-file-name
-Function Get-DownloadFileName {
-    Param (
-        [Parameter(Mandatory=$true)]
-        [String]$URL
-    )
-    $request = Invoke-WebRequest $url | Select -ExpandProperty Headers
-    $equalpos = $request.Get_Item("Content-Disposition").IndexOf("=")
-    return $request.Get_Item("Content-Disposition").SubString($equalpos + 1)
-}
-
-Function Get-DownloadFile {
-    Param (
-        [Parameter(Mandatory=$true)]
-        [String]$URL
-    )
-    $filename = Get-DownloadFileName $url
-    return Invoke-WebRequest $url -OutFile $filename
-}
-
-# Overwrite Existing WGET Alias
-Set-Alias -Name wget -Value Get-DownloadFile -Option AllScope
 
 # Alias definitions
 New-Alias -Name which -Value "Get-Command" -Description "Alias for Get-Command, mimic's Linux which command"
