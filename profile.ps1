@@ -12,7 +12,7 @@ $dotposh = "$Env:UserProfile\dotposh"
 
 # Shell History Settings
 $MaximumHistoryCount = 2048
-$Global:histfile = "$Env:USERPROFILE\.history.csv"
+$Global:histfile = "$Env:UserProfile\.history.csv"
 $truncateLogLines = 100
 
 # Shell customization settings
@@ -36,7 +36,7 @@ Function work-history {
         $history += (get-content $histfile)[-$truncateLogLines..-1] | where {$_ -match '^"\d+"'}
     }
     $history > $histfile
-    $history | select -Unique | Convertfrom-csv -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
+    $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
 }
 
 # Alias definitions
@@ -49,9 +49,9 @@ New-Alias -Name l -Value "Get-ChildItem" -Description "Alias for Get-ChildItem, 
 work-history
 
 Function prompt {
-    $hid = $myinvocation.historyID
+    $hid = $MyInvocation.HistoryID
     if ($hid -gt 1) {
-        get-history ($myinvocation.historyID -1 ) | convertto-csv | Select -last 1 >> $histfile
+        Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $histfile
     }
-    $(if (test-path variable:/PSDebugContext) { '[DBG]: ' } else { '' }) + "#$([math]::abs($hid)) PS$($PSVersionTable.psversion.major) " + $(Get-Location) + $(if ($nestedpromptlevel -ge 1) { '>>' }) + '> '
+    $(if (Test-Path Variable:/PSDebugContext) { '[DBG]: ' } else { '' }) + "#$([math]::abs($hid)) PS$($PSVersionTable.psversion.major) " + $(Get-Location) + $(if ($nestedpromptlevel -ge 1) { '>>' }) + '> '
 }
