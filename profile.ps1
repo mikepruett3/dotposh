@@ -48,10 +48,37 @@ New-Alias -Name l -Value "Get-ChildItem" -Description "Alias for Get-ChildItem, 
 #Call Work-History Function
 work-history
 
+# http://winterdom.com/2008/08/mypowershellprompt
+function shorten-path([string] $path) { 
+   $loc = $path.Replace($HOME, '~') 
+   # remove prefix for UNC paths 
+   $loc = $loc -replace '^[^:]+::', '' 
+   # make path shorter like tabs in Vim, 
+   # handle paths starting with \\ and . correctly 
+   return ($loc -replace '\\(\.?)([^\\])[^\\]*(?=\\)','\$1$2') 
+}
+
+# http://winterdom.com/2008/08/mypowershellprompt
 Function prompt {
+    # Color Variables
+    $dcyan = [ConsoleColor]::DarkCyan
+    $green = [ConsoleColor]::Green
+    $cyan = [ConsoleColor]::Cyan
+    $white = [ConsoleColor]::White
     $hid = $MyInvocation.HistoryID
     if ($hid -gt 1) {
         Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $histfile
     }
-    $(if (Test-Path Variable:/PSDebugContext) { '[DBG]: ' } else { '' }) + "#$([math]::abs($hid)) PS$($PSVersionTable.psversion.major) " + $(Get-Location) + $(if ($nestedpromptlevel -ge 1) { '>>' }) + '> '
+    if (Test-Path Variable:/PSDebugContext) {
+        Write-Host '[DBG]: ' -n
+    } else {
+        Write-Host '' -n
+    }
+    Write-Host "#$([math]::abs($hid)) " -n -f $white
+    Write-Host "$([net.dns]::GetHostName()) " -n -f $green
+    Write-Host "{" -n -f $dcyan
+    Write-Host "$(shorten-path (pwd).Path)" -n -f $cyan
+    Write-Host "}" -n -f $dcyan
+    Write-Host ">" -n -f $white
+    return ' '
 }
