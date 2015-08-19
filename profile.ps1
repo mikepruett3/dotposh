@@ -1,8 +1,5 @@
 # Set-ExecutionPolicy Unrestricted -- From Administrator Console
 
-# Module Imports
-#Import-Module PSReadLine
-
 # Setting environment variables
 $arch = "$Env:Processor_Architecture"
 $userprofile = "$Env:UserProfile"
@@ -18,6 +15,13 @@ $truncateLogLines = 100
 # Shell customization settings
 Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
+
+# Module Imports
+$CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
+ForEach ($Module in $CustomModules) {
+    Write-Host $Module
+    Import-Module "$dotposh\modules\$Module"
+}
 
 # Import Functions
 Import-Module "$dotposh\functions\*.ps1"
