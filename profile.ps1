@@ -19,7 +19,6 @@ $Shell = $Host.UI.RawUI
 # Module Imports
 $CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
 ForEach ($Module in $CustomModules) {
-    Write-Host $Module
     Import-Module "$dotposh\modules\$Module"
 }
 
