@@ -1,0 +1,8 @@
+PSBullet
+https://github.com/bgbak/PSBullet
+
+PSRemoteRegistry
+https://psremoteregistry.codeplex.com/
+
+SQLite (SQLite PowerShell Provider)
+https://psqlite.codeplex.com/
