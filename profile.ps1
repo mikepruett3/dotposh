@@ -23,7 +23,10 @@ ForEach ($Module in $CustomModules) {
 }
 
 # Import Functions
-Import-Module "$dotposh\functions\*.ps1"
+$CustomFunctions = $(dir "$dotposh\functions\*.ps1") | Select-Object -ExpandProperty Name
+ForEach ($Function in $CustomFunctions) {
+    Import-Module "$dotposh\functions\$Function"
+}
 
 # Unzip function
 Function unzip ([string]$filename){
