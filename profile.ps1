@@ -13,19 +13,26 @@ $Global:histfile = "$Env:UserProfile\.history.csv"
 $truncateLogLines = 100
 
 # Shell customization settings
-Set-Location $UserProfile\scripts
+# Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
 
 # Module Imports
 $CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
 ForEach ($Module in $CustomModules) {
-    Import-Module "$dotposh\modules\$Module"
+    Import-Module "$dotposh\modules\$Module" -ErrorAction SilentlyContinue
 }
 
 # Import Functions
 $CustomFunctions = $(dir "$dotposh\functions\*.ps1") | Select-Object -ExpandProperty Name
 ForEach ($Function in $CustomFunctions) {
-    Import-Module "$dotposh\functions\$Function"
+    Import-Module "$dotposh\functions\$Function" -ErrorAction SilentlyContinue
+}
+
+# Create the Scripts: drive
+# http://stackoverflow.com/a/146945
+If ((Test-Path -Path "$UserProfile\scripts") -and (Test-Path -Path "$UserProfile\Projects")) {
+    $NULL = New-PSDrive -Name X -PSProvider FileSystem -Root "$UserProfile\scripts"
+    $NULL = New-PSDrive -Name P -PSProvider FileSystem -Root "$UserProfile\Projects"
 }
 
 # Unzip function
@@ -45,11 +52,31 @@ Function work-history {
     $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
 }
 
+# inline functions, aliases and variables
+# https://github.com/scottmuc/poshfiles
+Function which($name) { Get-Command $name | Select-Object Definition }
+Function rm-rf($item) { Remove-Item $item -Recurse -Force }
+Function touch($file) { "" | Out-File $file -Encoding ASCII }
+Remove-Item alias:dir
+Function dir { Get-ChildItem -name }
+Remove-Item alias:ls
+Function ls { Get-ChildItem -name -force }
+Function ll { Get-ChildItem -force }
+Function hc { Get-History -count $MaximumHistoryCount }
+Function ep { gvim $Profile }
+
 # Alias definitions
-New-Alias -Name which -Value "Get-Command" -Description "Alias for Get-Command, mimic's Linux which command"
-New-Alias -Name grep -Value "Select-String" -Description "Alias for Select-String, mimic's Linux grep command"
-New-Alias -Name ll -Value "Get-ChildItem" -Description "Alias for Get-ChildItem, like 'ls' from linux."
-New-Alias -Name l -Value "Get-ChildItem" -Description "Alias for Get-ChildItem, like 'ls' from linux."
+Set-Alias grep      Select-String
+Set-Alias grepr     Select-StringRecurse
+Set-Alias sta       Start-Transcript
+Set-Alias str       Stop-Transcript
+Set-Alias hh        Get-History
+Set-Alias gcid      Get-ChildItemDirectory
+Set-Alias vi        gvim
+#set-alias wget      Get-WebItem
+Set-Alias ia        Invoke-Admin
+Set-Alias ica       Invoke-CommandAdmin
+Set-Alias isa       Invoke-ScriptAdmin
 
 #Call Work-History Function
 work-history
