@@ -58,10 +58,10 @@ Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
 Remove-Item alias:dir
-Function dir { Get-ChildItem -name }
+Function dir($path) { Get-ChildItem -name $path }
 Remove-Item alias:ls
-Function ls { Get-ChildItem -name -force }
-Function ll { Get-ChildItem -force }
+Function ls($path) { Get-ChildItem -name -force $path }
+Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { gvim $Profile }
 
