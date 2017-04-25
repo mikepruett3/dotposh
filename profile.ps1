@@ -7,6 +7,11 @@ $username = "$Env:UserName"
 $appdata = "$Env:AppData"
 $dotposh = "$Env:UserProfile\dotposh"
 
+# Extending the PSModulePath to include custom module location
+$PSModPath = [Environment]::GetEnvironmentVariable("PSModulePath")
+$PSModPath += ";$dotposh\modules\"
+[Environment]::SetEnvironmentVariable("PSModulePath",$PSModPath)
+
 # Shell History Settings
 $MaximumHistoryCount = 2048
 $Global:histfile = "$Env:UserProfile\.history.csv"
@@ -16,11 +21,12 @@ $truncateLogLines = 100
 # Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
 
+# <<Commenting out module loader>>
 # Module Imports
-$CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
-ForEach ($Module in $CustomModules) {
-    Import-Module "$dotposh\modules\$Module" -ErrorAction SilentlyContinue
-}
+# $CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
+# ForEach ($Module in $CustomModules) {
+#     Import-Module "$dotposh\modules\$Module" -ErrorAction SilentlyContinue
+# }
 
 # Import Functions
 $CustomFunctions = $(dir "$dotposh\functions\*.ps1") | Select-Object -ExpandProperty Name
