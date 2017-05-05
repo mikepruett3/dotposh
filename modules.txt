@@ -1,8 +1,3 @@
-PSBullet
-https://github.com/bgbak/PSBullet
-
-PSRemoteRegistry
-https://psremoteregistry.codeplex.com/
-
-SQLite (SQLite PowerShell Provider)
-https://psqlite.codeplex.com/
+posh-git
+https://github.com/dahlbyk/posh-git
+Install-Module posh-git -Scope CurrentUser
