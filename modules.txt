@@ -1,3 +1,7 @@
 posh-git
 https://github.com/dahlbyk/posh-git
 Install-Module posh-git -Scope CurrentUser
+
+BetterCredentials
+https://github.com/Jaykul/BetterCredentials
+Install-Module BetterCredentials

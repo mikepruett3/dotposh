@@ -21,12 +21,11 @@ $truncateLogLines = 100
 # Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
 
-# <<Commenting out module loader>>
 # Module Imports
-# $CustomModules = $(dir "$dotposh\modules") | Select-Object -ExpandProperty Name
-# ForEach ($Module in $CustomModules) {
-#     Import-Module "$dotposh\modules\$Module" -ErrorAction SilentlyContinue
-# }
+$CustomModules = "$Env:UserProfile\Documents\WindowsPowerShell\modules.ps1"
+If ( Test-Path -Path $CustomModules ) {
+    . $CustomModules
+}
 
 # Import Functions
 $CustomFunctions = $(dir "$dotposh\functions\*.ps1") | Select-Object -ExpandProperty Name
