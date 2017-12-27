@@ -11,16 +11,21 @@ function Start-PowerCLI {
         Author: Mike Pruett
         Date: December 27th, 2017
     #>
-    If ( ! (Get-PSSnapin VMware.VimAutomation.Core )) {
-        Add-PSSnapin VMware.VimAutomation.Core
-    } else {
-        Write-Error "Cannot find VMware.VimAutomation.Core PSSnapin!!"
-        Break
-    }
-    $PowerCLIEnv = "$Env:ProgramFiles(x86)\VMware\Infrastructure\PowerCLI\Scripts\Initialize-PowerCLIEnvironment.ps1"
+
+    # >> No longer needed, as Script Handles the PSSnapin! <<
+
+    # If ( ! (Get-PSSnapin VMware.VimAutomation.Core )) {
+    #     Add-PSSnapin VMware.VimAutomation.Core
+    # } else {
+    #     Write-Error "Cannot find VMware.VimAutomation.Core PSSnapin!!"
+    #     Break
+    # }
+
+    $PowerCLIEnv = "${Env:ProgramFiles(x86)}\VMware\Infrastructure\PowerCLI\Scripts\Initialize-PowerCLIEnvironment.ps1"
     if (Test-Path $PowerCLIEnv) {
         . "$PowerCLIEnv"
     } else {
-        Write-Error "Cannot find PowerCLI Environment Script!!!"
+        $PowerCLIEnv = "${Env:ProgramFiles}\VMware\Infrastructure\PowerCLI\Scripts\Initialize-PowerCLIEnvironment.ps1"
+        . "$PowerCLIEnv"
     }
 }
