@@ -45,6 +45,14 @@ Function unzip ([string]$filename){
     & "$Env:ProgramFiles\7-Zip\7z.exe" e $filename
 }
 
+# Exchange PowerShell Environment Function
+Function Start-ExchEnv {
+    if (Test-Path -Path "C:\Program Files\Microsoft\Exchange Server\V14\bin\RemoteExchange.ps1") {
+        . "C:\Program Files\Microsoft\Exchange Server\V14\bin\RemoteExchange.ps1"
+        Connect-ExchangeServer -auto
+    }
+}
+
 # History Function
 Function work-history {
     $history = @()
@@ -82,6 +90,7 @@ Set-Alias vi        gvim
 Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
 Set-Alias isa       Invoke-ScriptAdmin
+Set-Alias exch      Start-ExchEnv
 
 #Call Work-History Function
 work-history
