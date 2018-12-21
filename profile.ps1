@@ -98,12 +98,10 @@ work-history
 # Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
 if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
     # Creates Functions
-    function denv { & docker-machine env | Invoke-Expression }
+    function denv { & docker-machine env | Invoke-Expression -ErrorAction SilentlyContinue }
     function dstart { docker-machine start }
     function dstop { docker-machine stop }
-    if ( $(docker-machine active) -ne "No active host found" ) {
-        denv
-    }
+    denv
 }
 
 # http://winterdom.com/2008/08/mypowershellprompt
