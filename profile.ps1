@@ -98,8 +98,9 @@ work-history
 # Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
 if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
     # Creates Functions
+    Set-Alias dm docker-machine.exe
     function denv { & docker-machine env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
-    function dstart { docker-machine start }
+    function dstart { dm start }
     function dstop { docker-machine stop }
     function dstatus { docker-machine status }
     function dls { docker-machine ls }
