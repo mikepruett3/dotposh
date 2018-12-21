@@ -95,6 +95,8 @@ Set-Alias exch      Start-ExchEnv
 #Call Work-History Function
 work-history
 
+& "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" env | Invoke-Expression
+
 # http://winterdom.com/2008/08/mypowershellprompt
 function shorten-path([string] $path) { 
    $loc = $path.Replace($HOME, '~') 
