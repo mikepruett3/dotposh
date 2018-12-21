@@ -97,7 +97,8 @@ work-history
 
 # Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
 if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
-    & "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" env | Invoke-Expression
+    function de { & "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" env | Invoke-Expression }
+    de
 }
 
 # http://winterdom.com/2008/08/mypowershellprompt
