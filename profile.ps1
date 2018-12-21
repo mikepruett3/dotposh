@@ -99,11 +99,8 @@ work-history
 if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
     # Creates Functions
     Set-Alias dm docker-machine.exe
-    function denv { & docker-machine env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
-    function dstart { dm start }
-    function dstop { docker-machine stop }
-    function dstatus { docker-machine status }
-    function dls { docker-machine ls }
+    function denv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
+    function dls { dm ls }
     denv
 }
 
