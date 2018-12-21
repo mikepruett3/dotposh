@@ -99,9 +99,9 @@ work-history
 if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
     # Creates Functions
     Set-Alias dm docker-machine.exe
-    function denv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
+    function dmenv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
     function dls { dm ls }
-    denv
+    dmenv
 }
 
 # http://winterdom.com/2008/08/mypowershellprompt
