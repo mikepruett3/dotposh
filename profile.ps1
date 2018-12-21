@@ -77,7 +77,7 @@ Function ls($path) { Get-ChildItem -name -force $path }
 Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { gvim $Profile }
-Function dockerenv { & "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" env | Invoke-Expression }
+Function de { "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" env | Invoke-Expression }
 
 # Alias definitions
 Set-Alias grep      Select-String
