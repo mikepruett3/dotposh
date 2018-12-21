@@ -96,11 +96,9 @@ Set-Alias exch      Start-ExchEnv
 work-history
 
 # Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
-if ( Test-Path -Path "$Env:UserProfile\scoop\apps\docker-machine\current\docker-machine.exe" ) {
-    # Creates Functions
+if ( Get-Command "docker-machine.exe" -ErrorAction SilentlyContinue ) {
     Set-Alias dm docker-machine.exe
     function dmenv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
-    function dls { dm ls }
     dmenv
 }
 
