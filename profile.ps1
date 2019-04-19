@@ -97,6 +97,7 @@ Function ls($path) { Get-ChildItem -name -force $path }
 Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { gvim $Profile }
+function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 
 # Alias definitions
 Set-Alias grep      Select-String
@@ -111,6 +112,7 @@ Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
 Set-Alias isa       Invoke-ScriptAdmin
 Set-Alias exch      Connect-Exchange
+Set-Alias kpss      Remove-AllPSSessions
 
 #Call Work-History Function
 work-history
