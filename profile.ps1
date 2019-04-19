@@ -41,15 +41,35 @@ If ((Test-Path -Path "$UserProfile\scripts") -and (Test-Path -Path "$UserProfile
 }
 
 # Unzip function
-Function unzip ([string]$filename){
-    & "$Env:ProgramFiles\7-Zip\7z.exe" e $filename
-}
+#Function unzip ([string]$filename){
+#    & "$Env:ProgramFiles\7-Zip\7z.exe" e $filename
+#}
 
-# Exchange PowerShell Environment Function
-Function Start-ExchEnv {
-    if (Test-Path -Path "C:\Program Files\Microsoft\Exchange Server\V14\bin\RemoteExchange.ps1") {
-        . "C:\Program Files\Microsoft\Exchange Server\V14\bin\RemoteExchange.ps1"
-        Connect-ExchangeServer -auto
+# Remote Exchange PowerShell Session
+function Connect-Exchange {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$True)]
+        [string]$Server,
+        [Parameter(Mandatory=$True)]
+        [string]$Credential
+    )
+    begin {
+        $UserCredential = Get-Credential("$Credential")
+        if (!(Test-Connection -Count 1 -ComputerName $Server -Quiet )) {
+            Write-Error "Cannot ping $Server!!!"
+            Break
+        }
+    }
+    process {
+        $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$Server/PowerShell/ -Authentication Kerberos -Credential $UserCredential
+        Import-PSSession $Session -DisableNameChecking
+    }
+    end {
+        $Server = $NULL
+        $Credential = $NULL
+        $UserCredential = $NULL
+        $Session = $NULL
     }
 }
 
@@ -90,7 +110,7 @@ Set-Alias vi        gvim
 Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
 Set-Alias isa       Invoke-ScriptAdmin
-Set-Alias exch      Start-ExchEnv
+Set-Alias exch      Connect-Exchange
 
 #Call Work-History Function
 work-history
