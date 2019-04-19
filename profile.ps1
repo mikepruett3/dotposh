@@ -46,6 +46,7 @@ If ((Test-Path -Path "$UserProfile\scripts") -and (Test-Path -Path "$UserProfile
 #}
 
 # Remote Exchange PowerShell Session
+# https://docs.microsoft.com/en-us/powershell/exchange/exchange-server/connect-to-exchange-servers-using-remote-powershell?view=exchange-ps
 function Connect-Exchange {
     [CmdletBinding()]
     param (
