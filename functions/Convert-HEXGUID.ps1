@@ -31,6 +31,6 @@ function Convert-HEXGUID {
 
     switch($PSBoundParameters.Keys) {
         'Hex'   { [GUID](($Hex.ToByteArray() | % { '{0:x}' -f $_ }) -join '') }
-        'GUID'  { [String](($GUID.ToByteArray() | % { '{0:x}' -f $_ }) -join '') }
+        'GUID'  { [String](($GUID.ToByteArray() | % { '{0:x}' -f $_ }) -join '').ToUpper() }
     }
 }
