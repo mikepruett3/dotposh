@@ -86,6 +86,17 @@ Function work-history {
     $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
 }
 
+# Create edit Function, based on EDITOR variable
+if ($Env:EDITOR -eq $NULL) {
+    if ( Get-Command "code" -ErrorAction SilentlyContinue ) {
+        Function edit($file) { code $file }
+    } else {
+        Function edit($file) { notepad $file }
+    }
+} else {
+    Function edit($file) { Start-Process -FilePath $Env:EDITOR -ArgumentList $file }
+}
+
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
 Function which($name) { Get-Command $name | Select-Object Definition }
@@ -97,7 +108,7 @@ Remove-Item alias:ls
 Function ls($path) { Get-ChildItem -name -force $path }
 Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
-Function ep { gvim $Profile }
+Function ep { edit $Profile }
 function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 
 # Alias definitions
@@ -107,7 +118,7 @@ Set-Alias sta       Start-Transcript
 Set-Alias str       Stop-Transcript
 Set-Alias hh        Get-History
 Set-Alias gcid      Get-ChildItemDirectory
-Set-Alias vi        gvim
+Set-Alias vi        edit
 #set-alias wget      Get-WebItem
 Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
@@ -119,11 +130,11 @@ Set-Alias kpss      Remove-AllPSSessions
 work-history
 
 # Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
-if ( Get-Command "docker-machine.exe" -ErrorAction SilentlyContinue ) {
-    Set-Alias dm docker-machine.exe
-    function dmenv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
-    dmenv
-}
+#if ( Get-Command "docker-machine.exe" -ErrorAction SilentlyContinue ) {
+#    Set-Alias dm docker-machine.exe
+#    function dmenv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
+#    dmenv
+#}
 
 # http://winterdom.com/2008/08/mypowershellprompt
 function shorten-path([string] $path) { 
