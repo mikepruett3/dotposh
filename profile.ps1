@@ -112,9 +112,7 @@ if ( Get-Command "wget.exe" -ErrorAction SilentlyContinue ) {
 if ( Get-Command "curl.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:curl
 }
-if ( Get-Command "grep.exe" -ErrorAction SilentlyContinue ) {
-    Remove-Item alias:grep
-} else {
+if (!( Get-Command "grep.exe" -ErrorAction SilentlyContinue )) {
     Set-Alias -Name grep -Value Select-String
     Set-Alias -Name grepr -Value Select-StringRecurse
 }
