@@ -93,14 +93,19 @@ if ($Env:EDITOR -eq $NULL) {
 }
 
 # Remove existing aliases from Shell
-function RemoveAlias($alias) {
+function RemoveAlias {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$True)]
+        [string]$alias,
+    )
     if ( Get-Command "$alias" -ErrorAction SilentlyContinue ) {
         $f = (Get-ChildItem (Get-Command "$alias" -ErrorAction SilentlyContinue).Source).BaseName
         Remove-Item alias:$f
     }
 }
 
-RemoveAlias ls.exe
+RemoveAlias -alias "ls.exe"
 #Remove-Item alias:dir
 RemoveAlias wget.exe
 RemoveAlias curl.exe
