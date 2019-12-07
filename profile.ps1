@@ -100,10 +100,10 @@ function RemoveAlias($alias) {
     }
 }
 
-RemoveAlias "ls.exe"
+RemoveAlias ls.exe
 #Remove-Item alias:dir
-RemoveAlias "wget.exe"
-RemoveAlias "curl.exe"
+RemoveAlias wget.exe
+RemoveAlias curl.exe
 
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
