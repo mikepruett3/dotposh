@@ -92,17 +92,20 @@ if ($Env:EDITOR -eq $NULL) {
     Function edit($file) { Start-Process -FilePath $Env:EDITOR -ArgumentList $file }
 }
 
+# Remove existing aliases from Shell
+Remove-Item alias:ls
+#Remove-Item alias:dir
+Remove-Item alias:wget
+Remove-Item alias:curl
+
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
 Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
-#Remove-Item alias:dir
 #Function dir($path) { Get-ChildItem -name $path }
-Remove-Item alias:ls
 Function ll($path) { ls -l }
 Function l($path) { ls -la }
-#Function ls($path) { Get-ChildItem -name -force $path }
 #Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { edit $Profile }
