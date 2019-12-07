@@ -6,6 +6,10 @@ $userprofile = "$Env:UserProfile"
 $username = "$Env:UserName"
 $appdata = "$Env:AppData"
 $dotposh = "$Env:UserProfile\dotposh"
+if (Test-Path -Path "$UserProfile\Projects\dotposh")  {
+    $dotposhrepo = "$UserProfile\Projects\dotposh"
+}
+
 
 # Extending the PSModulePath to include custom module location
 $PSModPath = [Environment]::GetEnvironmentVariable("PSModulePath")
@@ -91,6 +95,7 @@ if ($Env:EDITOR -eq $NULL) {
 } else {
     Function edit($file) { Start-Process -FilePath $Env:EDITOR -ArgumentList $file }
 }
+Set-Alias -Name vi -Value edit
 
 # Remove existing aliases from Shell
 if ( Get-Command "ls.exe" -ErrorAction SilentlyContinue ) {
@@ -116,8 +121,9 @@ Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
 Function hc { Get-History -count $MaximumHistoryCount }
-Function ep { edit $Profile }
-function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
+Function ep { pushd $dotposhrepo; edit . ; popd }
+Function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
+function updp { pushd $dotposh; git pull; popd }
 
 # Alias definitions
 Set-Alias grep      Select-String
@@ -126,7 +132,6 @@ Set-Alias sta       Start-Transcript
 Set-Alias str       Stop-Transcript
 Set-Alias hh        Get-History
 Set-Alias gcid      Get-ChildItemDirectory
-Set-Alias vi        edit
 Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
 Set-Alias isa       Invoke-ScriptAdmin
