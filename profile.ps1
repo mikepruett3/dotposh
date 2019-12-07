@@ -40,11 +40,6 @@ If ((Test-Path -Path "$UserProfile\scripts") -and (Test-Path -Path "$UserProfile
     $NULL = New-PSDrive -Name P -PSProvider FileSystem -Root "$UserProfile\Projects"
 }
 
-# Unzip function
-#Function unzip ([string]$filename){
-#    & "$Env:ProgramFiles\7-Zip\7z.exe" e $filename
-#}
-
 # Remote Exchange PowerShell Session
 # https://docs.microsoft.com/en-us/powershell/exchange/exchange-server/connect-to-exchange-servers-using-remote-powershell?view=exchange-ps
 function Connect-Exchange {
@@ -102,11 +97,11 @@ if ($Env:EDITOR -eq $NULL) {
 Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
-Remove-Item alias:dir
-Function dir($path) { Get-ChildItem -name $path }
-Remove-Item alias:ls
-Function ls($path) { Get-ChildItem -name -force $path }
-Function ll($path) { Get-ChildItem -force $path }
+#Remove-Item alias:dir
+#Function dir($path) { Get-ChildItem -name $path }
+#Remove-Item alias:ls
+#Function ls($path) { Get-ChildItem -name -force $path }
+#Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { edit $Profile }
 function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
@@ -119,7 +114,6 @@ Set-Alias str       Stop-Transcript
 Set-Alias hh        Get-History
 Set-Alias gcid      Get-ChildItemDirectory
 Set-Alias vi        edit
-#set-alias wget      Get-WebItem
 Set-Alias ia        Invoke-Admin
 Set-Alias ica       Invoke-CommandAdmin
 Set-Alias isa       Invoke-ScriptAdmin
