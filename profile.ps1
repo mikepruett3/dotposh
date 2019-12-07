@@ -97,7 +97,7 @@ function RemoveAlias {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$True)]
-        [string]$alias,
+        [string]$alias
     )
     if ( Get-Command "$alias" -ErrorAction SilentlyContinue ) {
         $f = (Get-ChildItem (Get-Command "$alias" -ErrorAction SilentlyContinue).Source).BaseName
