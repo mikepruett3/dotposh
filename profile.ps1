@@ -93,10 +93,17 @@ if ($Env:EDITOR -eq $NULL) {
 }
 
 # Remove existing aliases from Shell
-Remove-Item alias:ls
+function RemoveAlias($alias) {
+    if ( Get-Command "$alias" -ErrorAction SilentlyContinue ) {
+        $f = (Get-ChildItem (Get-Command "$alias" -ErrorAction SilentlyContinue).Source).BaseName
+        Remove-Item alias:$f
+    }
+}
+
+RemoveAlias "ls.exe"
 #Remove-Item alias:dir
-Remove-Item alias:wget
-Remove-Item alias:curl
+RemoveAlias "wget.exe"
+RemoveAlias "curl.exe"
 
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
