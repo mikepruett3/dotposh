@@ -95,6 +95,11 @@ if ($Env:EDITOR -eq $NULL) {
 # Remove existing aliases from Shell
 if ( Get-Command "ls.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:ls
+    Function ll($path) { ls -l }
+    Function l($path) { ls -la }
+} else {
+    Function ls($path) { Get-ChildItem -name -force $path }
+    Function ll($path) { Get-ChildItem -force $path }
 }
 if ( Get-Command "wget.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:wget
@@ -103,16 +108,13 @@ if ( Get-Command "curl.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:curl
 }
 #Remove-Item alias:dir
+#Function dir($path) { Get-ChildItem -name $path }
 
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
 Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
-#Function dir($path) { Get-ChildItem -name $path }
-Function ll($path) { ls -l }
-Function l($path) { ls -la }
-#Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { edit $Profile }
 function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
