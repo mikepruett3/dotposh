@@ -99,7 +99,7 @@ Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
 #Remove-Item alias:dir
 #Function dir($path) { Get-ChildItem -name $path }
-#Remove-Item alias:ls
+Remove-Item alias:ls
 #Function ls($path) { Get-ChildItem -name -force $path }
 #Function ll($path) { Get-ChildItem -force $path }
 Function hc { Get-History -count $MaximumHistoryCount }
