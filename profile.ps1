@@ -129,13 +129,6 @@ Set-Alias kpss      Remove-AllPSSessions
 #Call Work-History Function
 work-history
 
-# Check if Docker-Machine.exe in location. If so, then bind env to Invoke-Expression
-#if ( Get-Command "docker-machine.exe" -ErrorAction SilentlyContinue ) {
-#    Set-Alias dm docker-machine.exe
-#    function dmenv { & dm env | Invoke-Expression -ErrorAction SilentlyContinue | Out-Null }
-#    dmenv
-#}
-
 # http://winterdom.com/2008/08/mypowershellprompt
 function shorten-path([string] $path) { 
    $loc = $path.Replace($HOME, '~') 
