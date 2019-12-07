@@ -112,6 +112,12 @@ if ( Get-Command "wget.exe" -ErrorAction SilentlyContinue ) {
 if ( Get-Command "curl.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:curl
 }
+if ( Get-Command "grep.exe" -ErrorAction SilentlyContinue ) {
+    Remove-Item alias:grep
+} else {
+    Set-Alias -Name grep -Value Select-String
+    Set-Alias -Name grepr -Value Select-StringRecurse
+}
 #Remove-Item alias:dir
 #Function dir($path) { Get-ChildItem -name $path }
 
@@ -126,17 +132,15 @@ Function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 function updp { pushd $dotposh; git pull; popd }
 
 # Alias definitions
-Set-Alias grep      Select-String
-Set-Alias grepr     Select-StringRecurse
-Set-Alias sta       Start-Transcript
-Set-Alias str       Stop-Transcript
-Set-Alias hh        Get-History
-Set-Alias gcid      Get-ChildItemDirectory
-Set-Alias ia        Invoke-Admin
-Set-Alias ica       Invoke-CommandAdmin
-Set-Alias isa       Invoke-ScriptAdmin
-Set-Alias exch      Connect-Exchange
-Set-Alias kpss      Remove-AllPSSessions
+Set-Alias -Name sta -Value Start-Transcript
+Set-Alias -Name str -Value Stop-Transcript
+Set-Alias -Name hh -Value Get-History
+Set-Alias -Name gcid -Value Get-ChildItemDirectory
+Set-Alias -Name ia -Value Invoke-Admin
+Set-Alias -Name ica -Value Invoke-CommandAdmin
+Set-Alias -Name isa -Value Invoke-ScriptAdmin
+Set-Alias -Name exch -Value Connect-Exchange
+Set-Alias -Name kpss -Value Remove-AllPSSessions
 
 #Call Work-History Function
 work-history
