@@ -100,8 +100,8 @@ Set-Alias -Name vi -Value edit
 # Remove existing aliases from Shell
 if ( Get-Command "ls.exe" -ErrorAction SilentlyContinue ) {
     Remove-Item alias:ls
-    Function ll($path) { ls -l }
-    Function l($path) { ls -la }
+    Function ll($path) { ls -l $path }
+    Function l($path) { ls -la $path }
 } else {
     Function ls($path) { Get-ChildItem -name -force $path }
     Function ll($path) { Get-ChildItem -force $path }
