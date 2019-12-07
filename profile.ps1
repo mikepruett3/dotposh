@@ -93,22 +93,16 @@ if ($Env:EDITOR -eq $NULL) {
 }
 
 # Remove existing aliases from Shell
-Function RemoveAlias {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory=$True)]
-        [string]$alias
-    )
-    if ( Get-Command "$alias" -ErrorAction SilentlyContinue ) {
-        $f = (Get-ChildItem (Get-Command "$alias" -ErrorAction SilentlyContinue).Source).BaseName
-        Remove-Item alias:$f
-    }
+if ( Get-Command "ls.exe" -ErrorAction SilentlyContinue ) {
+    Remove-Item alias:ls
 }
-
-RemoveAlias -alias ls.exe
+if ( Get-Command "wget.exe" -ErrorAction SilentlyContinue ) {
+    Remove-Item alias:wget
+}
+if ( Get-Command "curl.exe" -ErrorAction SilentlyContinue ) {
+    Remove-Item alias:curl
+}
 #Remove-Item alias:dir
-RemoveAlias wget.exe
-RemoveAlias curl.exe
 
 # inline functions, aliases and variables
 # https://github.com/scottmuc/poshfiles
