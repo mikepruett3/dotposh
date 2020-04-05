@@ -128,6 +128,8 @@ Function hc { Get-History -count $MaximumHistoryCount }
 Function ep { pushd $dotposhrepo; edit . ; popd }
 Function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 function updp { pushd $dotposh; git pull; popd }
+function lc { Get-ChildItem -File | Rename-Item -NewName { $_.FullName.ToLower() } }
+function rusc { Get-ChildItem -File | Rename-Item -NewName { $_.Name -replace ' ','_' } }
 
 # Alias definitions
 Set-Alias -Name sta -Value Start-Transcript
