@@ -130,7 +130,7 @@ Function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 function updp { pushd $dotposh; git pull; popd }
 function lc { Get-ChildItem -File | Rename-Item -NewName { $_.FullName.ToLower() } }
 function rusc { Get-ChildItem -File | Rename-Item -NewName { $_.Name -replace ' ','_' } }
-function rn01 { Get-ChildItem -File | Rename-Item -NewName { $_.BaseName + "01" + $_.Extension } }
+function rnn($number) { Get-ChildItem -File | Rename-Item -NewName { $_.BaseName + $number + $_.Extension } }
 
 # Alias definitions
 Set-Alias -Name sta -Value Start-Transcript
