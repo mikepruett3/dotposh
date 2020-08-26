@@ -63,10 +63,10 @@ function Get-IPAddress {
     }
 
     end {
-        $WShell = $Null
-        $IPAddress = $Null
-        $Private = $Null
-        $Public = $Null
-        $paramHash = $Null
+        Clear-Variable -Name "WShell" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "IPAddress" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "Private" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "Public" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "paramHash" -ErrorAction SilentlyContinue
     }
 }
