@@ -1,105 +1,80 @@
 # Set-ExecutionPolicy Unrestricted -- From Administrator Console
 
-# Setting environment variables
-$arch = "$Env:Processor_Architecture"
-$userprofile = "$Env:UserProfile"
-$username = "$Env:UserName"
-$appdata = "$Env:AppData"
-$dotposh = "$Env:UserProfile\dotposh"
-if (Test-Path -Path "$UserProfile\Projects\dotposh")  {
-    $dotposhrepo = "$UserProfile\Projects\dotposh"
+# Setting Environment Variables
+#$arch = "$Env:Processor_Architecture"
+#$UserProfile = "$Env:UserProfile"
+#$username = "$Env:UserName"
+#$appdata = "$Env:AppData"
+$dotposh = "$HOME\dotposh"
+if (Test-Path -Path "$HOME\Projects\dotposh")  {
+    $dotposhrepo = "$HOME\Projects\dotposh"
 }
 
-
 # Extending the PSModulePath to include custom module location
-$PSModPath = [Environment]::GetEnvironmentVariable("PSModulePath")
-$PSModPath += ";$dotposh\modules\"
-[Environment]::SetEnvironmentVariable("PSModulePath",$PSModPath)
+$PSModulePath = [Environment]::GetEnvironmentVariable("PSModulePath")
+$PSModulePath += ";$dotposh\modules\"
+[Environment]::SetEnvironmentVariable("PSModulePath",$PSModulePath)
+Clear-Variable -Name "PSModulePath" -ErrorAction SilentlyContinue
 
 # Shell History Settings
 $MaximumHistoryCount = 2048
-$Global:histfile = "$Env:UserProfile\.history.csv"
+$Global:HistFile = "$HOME\.history.csv"
 $truncateLogLines = 100
 
 # Shell customization settings
-# Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
 
 # Custom Module Imports
-$CustomModules = "$Env:UserProfile\Documents\WindowsPowerShell\modules.ps1"
-If ( Test-Path -Path $CustomModules ) {
-    . $CustomModules
+#$CustomModules = "$HOME\Documents\WindowsPowerShell\modules.ps1"
+If ( Test-Path -Path "$HOME\Documents\WindowsPowerShell\modules.ps1" ) {
+    . "$HOME\Documents\WindowsPowerShell\modules.ps1"
 }
+#Clear-Variable -Name "CustomModules" -ErrorAction SilentlyContinue
 
 # Import Modules
-$Modules = $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name
-foreach ($Module in $Modules) {
+#$Modules = $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name
+foreach ( $Module in $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name ) {
     Import-Module $Module -ErrorAction SilentlyContinue
 }
+#Clear-Variable -Name "Modules" -ErrorAction SilentlyContinue
+Clear-Variable -Name "Module" -ErrorAction SilentlyContinue
 
 # Import Functions
-$CustomFunctions = $(dir "$dotposh\functions\*.ps1") | Select-Object -ExpandProperty Name
-ForEach ($Function in $CustomFunctions) {
+#$Functions = $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -Files).Name
+ForEach ( $Function in $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -Files).Name ) {
     Import-Module "$dotposh\functions\$Function" -ErrorAction SilentlyContinue
 }
+#Clear-Variable -Name "Functions" -ErrorAction SilentlyContinue
+Clear-Variable -Name "Function" -ErrorAction SilentlyContinue
 
 # Create the Scripts: drive
 # http://stackoverflow.com/a/146945
-If ((Test-Path -Path "$UserProfile\scripts") -and (Test-Path -Path "$UserProfile\Projects")) {
-    $NULL = New-PSDrive -Name X -PSProvider FileSystem -Root "$UserProfile\scripts"
-    $NULL = New-PSDrive -Name P -PSProvider FileSystem -Root "$UserProfile\Projects"
-}
-
-# Remote Exchange PowerShell Session
-# https://docs.microsoft.com/en-us/powershell/exchange/exchange-server/connect-to-exchange-servers-using-remote-powershell?view=exchange-ps
-function Connect-Exchange {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory=$True)]
-        [string]$Server,
-        [Parameter(Mandatory=$True)]
-        [string]$Credential
-    )
-    begin {
-        $UserCredential = Get-Credential("$Credential")
-        if (!(Test-Connection -Count 1 -ComputerName $Server -Quiet )) {
-            Write-Error "Cannot ping $Server!!!"
-            Break
-        }
-    }
-    process {
-        $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$Server/PowerShell/ -Authentication Kerberos -Credential $UserCredential
-        Import-PSSession $Session -DisableNameChecking
-    }
-    end {
-        Clear-Variable -Name "Server" -ErrorAction SilentlyContinue
-        Clear-Variable -Name "Credential" -ErrorAction SilentlyContinue
-        Clear-Variable -Name "UserCredential" -ErrorAction SilentlyContinue
-        Clear-Variable -Name "Session" -ErrorAction SilentlyContinue
-    }
+If ((Test-Path -Path "$HOME\scripts") -and (Test-Path -Path "$HOME\Projects")) {
+    $NULL = New-PSDrive -Name X -PSProvider FileSystem -Root "$HOME\scripts"
+    $NULL = New-PSDrive -Name P -PSProvider FileSystem -Root "$HOME\Projects"
 }
 
 # History Function
-Function work-history {
-    $history = @()
-    $history += '#TYPE Microsoft.PowerShell.Commands.HistoryInfo'
-    $history += '"Id","CommandLine","ExecutionStatus","StartExecutionTime","EndExecutionTime"'
-    if (Test-Path $histfile) {
-        $history += (get-content $histfile)[-$truncateLogLines..-1] | where {$_ -match '^"\d+"'}
-    }
-    $history > $histfile
-    $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
-}
+#Function work-history {
+#    $history = @()
+#    $history += '#TYPE Microsoft.PowerShell.Commands.HistoryInfo'
+#    $history += '"Id","CommandLine","ExecutionStatus","StartExecutionTime","EndExecutionTime"'
+#    if (Test-Path $histfile) {
+#        $history += (get-content $histfile)[-$truncateLogLines..-1] | where {$_ -match '^"\d+"'}
+#    }
+#    $history > $histfile
+#    $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
+#}
 
 # Create edit Function, based on EDITOR variable
 if ($Env:EDITOR -eq $NULL) {
     if ( Get-Command "code" -ErrorAction SilentlyContinue ) {
-        Function edit($file) { code $file }
+        function edit($file) { code $file }
     } else {
-        Function edit($file) { notepad $file }
+        function edit($file) { notepad $file }
     }
 } else {
-    Function edit($file) { Start-Process -FilePath $Env:EDITOR -ArgumentList $file }
+    function edit($file) { Start-Process -FilePath $Env:EDITOR -ArgumentList $file }
 }
 Set-Alias -Name vi -Value edit
 
@@ -150,7 +125,7 @@ Set-Alias -Name exch -Value Connect-Exchange
 Set-Alias -Name kpss -Value Remove-AllPSSessions
 
 #Call Work-History Function
-work-history
+Work-History
 
 # http://winterdom.com/2008/08/mypowershellprompt
 function shorten-path([string] $path) { 
@@ -171,7 +146,7 @@ Function prompt {
     $white = [ConsoleColor]::White
     $hid = $MyInvocation.HistoryID
     if ($hid -gt 1) {
-        Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $histfile
+        Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $HistFile
     }
     if (Test-Path Variable:/PSDebugContext) {
         Write-Host '[DBG]: ' -n
@@ -186,12 +161,3 @@ Function prompt {
     Write-Host ">" -n -f $white
     return ' '
 }
-
-# Cleanup Variables
-Clear-Variable -Name "PSModPath" -ErrorAction SilentlyContinue
-Clear-Variable -Name "CustomModules" -ErrorAction SilentlyContinue
-Clear-Variable -Name "Modules" -ErrorAction SilentlyContinue
-Clear-Variable -Name "Module" -ErrorAction SilentlyContinue
-Clear-Variable -Name "CustomFunctions" -ErrorAction SilentlyContinue
-Clear-Variable -Name "Function" -ErrorAction SilentlyContinue
-Clear-Variable -Name "CustomFunctions" -ErrorAction SilentlyContinue
