@@ -41,7 +41,7 @@ Clear-Variable -Name "Module" -ErrorAction SilentlyContinue
 
 # Import Functions
 #$Functions = $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -Files).Name
-ForEach ( $Function in $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -Files).Name ) {
+ForEach ( $Function in $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -File).Name ) {
     Import-Module "$dotposh\functions\$Function" -ErrorAction SilentlyContinue
 }
 #Clear-Variable -Name "Functions" -ErrorAction SilentlyContinue
