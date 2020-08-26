@@ -25,10 +25,16 @@ $truncateLogLines = 100
 # Set-Location $UserProfile\scripts
 $Shell = $Host.UI.RawUI
 
-# Module Imports
+# Custom Module Imports
 $CustomModules = "$Env:UserProfile\Documents\WindowsPowerShell\modules.ps1"
 If ( Test-Path -Path $CustomModules ) {
     . $CustomModules
+}
+
+# Import Modules
+$Modules = $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name
+foreach ($Module in $Modules) {
+    Import-Module $Module -ErrorAction SilentlyContinue
 }
 
 # Import Functions
@@ -66,10 +72,10 @@ function Connect-Exchange {
         Import-PSSession $Session -DisableNameChecking
     }
     end {
-        $Server = $NULL
-        $Credential = $NULL
-        $UserCredential = $NULL
-        $Session = $NULL
+        Clear-Variable -Name "Server" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "Credential" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "UserCredential" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "Session" -ErrorAction SilentlyContinue
     }
 }
 
@@ -180,3 +186,12 @@ Function prompt {
     Write-Host ">" -n -f $white
     return ' '
 }
+
+# Cleanup Variables
+Clear-Variable -Name "PSModPath" -ErrorAction SilentlyContinue
+Clear-Variable -Name "CustomModules" -ErrorAction SilentlyContinue
+Clear-Variable -Name "Modules" -ErrorAction SilentlyContinue
+Clear-Variable -Name "Module" -ErrorAction SilentlyContinue
+Clear-Variable -Name "CustomFunctions" -ErrorAction SilentlyContinue
+Clear-Variable -Name "Function" -ErrorAction SilentlyContinue
+Clear-Variable -Name "CustomFunctions" -ErrorAction SilentlyContinue
