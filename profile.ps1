@@ -106,37 +106,32 @@ Set-Alias -Name kpss -Value Remove-AllPSSessions
 # Call Work-History Function
 Work-History
 
-# http://winterdom.com/2008/08/mypowershellprompt
-#function shorten-path([string] $path) { 
-#   $loc = $path.Replace($HOME, '~') 
-#   # remove prefix for UNC paths 
-#   $loc = $loc -replace '^[^:]+::', '' 
-#   # make path shorter like tabs in Vim, 
-#   # handle paths starting with \\ and . correctly 
-#   return ($loc -replace '\\(\.?)([^\\])[^\\]*(?=\\)','\$1$2') 
-#}
+# Load Custom Prompt
+If ( Test-Path -Path "$dotposh\Prompt.ps1" ) {
+    . "$dotposh\Prompt.ps1"
+}
 
 # http://winterdom.com/2008/08/mypowershellprompt
-Function prompt {
-    # Color Variables
-    $dcyan = [ConsoleColor]::DarkCyan
-    $green = [ConsoleColor]::Green
-    $cyan = [ConsoleColor]::Cyan
-    $white = [ConsoleColor]::White
-    $hid = $MyInvocation.HistoryID
-    if ($hid -gt 1) {
-        Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $HistFile
-    }
-    if (Test-Path Variable:/PSDebugContext) {
-        Write-Host '[DBG]: ' -n
-    } else {
-        Write-Host '' -n
-    }
-    Write-Host "#$([math]::abs($hid)) " -n -f $white
-    Write-Host "$([net.dns]::GetHostName()) " -n -f $green
-    Write-Host "{" -n -f $dcyan
-    Write-Host "$(Shorten-Path (pwd).Path)" -n -f $cyan
-    Write-Host "}" -n -f $dcyan
-    Write-Host ">" -n -f $white
-    return ' '
-}
+#Function prompt {
+#    # Color Variables
+#    $dcyan = [ConsoleColor]::DarkCyan
+#    $green = [ConsoleColor]::Green
+#    $cyan = [ConsoleColor]::Cyan
+#    $white = [ConsoleColor]::White
+#    $hid = $MyInvocation.HistoryID
+#    if ($hid -gt 1) {
+#        Get-History ($MyInvocation.HistoryID -1 ) | ConvertTo-CSV | Select -Last 1 >> $HistFile
+#    }
+#    if (Test-Path Variable:/PSDebugContext) {
+#        Write-Host '[DBG]: ' -n
+#    } else {
+#        Write-Host '' -n
+#    }
+#    Write-Host "#$([math]::abs($hid)) " -n -f $white
+#    Write-Host "$([net.dns]::GetHostName()) " -n -f $green
+#    Write-Host "{" -n -f $dcyan
+#    Write-Host "$(Shorten-Path (pwd).Path)" -n -f $cyan
+#    Write-Host "}" -n -f $dcyan
+#    Write-Host ">" -n -f $white
+#    return ' '
+#}
