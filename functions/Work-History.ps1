@@ -1,20 +1,14 @@
 function Work-History {
     <#
     .SYNOPSIS
-        Create a Remote PSSession to an Exchange server, and import Exchange Modules
+        Creates a History for the current shell
     .DESCRIPTION
-        Function that creates a Remote PSSession to an Exchange Server, then imports/ingests 
-        Exchange cmdlets for use in current shell
+        Function that creates a History for the running shell, and writes it
+        to a .csv file.
     .LINK
-        https://docs.microsoft.com/en-us/powershell/exchange/exchange-server/connect-to-exchange-servers-using-remote-powershell?view=exchange-ps
-    .PARAMETER Server
-        The Exchange Server to establish a Remote PSSession.
-    .PARAMETER Credential
-        Credentials used to connect to the Exchange Server, will prompt for password of
-        the associated account. Can be in either DOMAIN\Username or Username@domain.com 
-        format.
+        https://docs.microsoft.com/en-us/powershell/exchange/exchange-server/connect-to-exchange-servers-using-remote-powershell?view=exchange-ps.
     .EXAMPLE
-        > Connect-Exchange -Server exchserver.example.com -Credential mycreds@example.com
+        > Work-History
     .NOTES
         Author: Mike Pruett
         Date: August 26th, 2020

@@ -2,9 +2,6 @@
 
 # Setting Environment Variables
 #$arch = "$Env:Processor_Architecture"
-#$UserProfile = "$Env:UserProfile"
-#$username = "$Env:UserName"
-#$appdata = "$Env:AppData"
 $dotposh = "$HOME\dotposh"
 if (Test-Path -Path "$HOME\Projects\dotposh")  {
     $dotposhrepo = "$HOME\Projects\dotposh"
@@ -17,7 +14,7 @@ $PSModulePath += ";$dotposh\modules\"
 Clear-Variable -Name "PSModulePath" -ErrorAction SilentlyContinue
 
 # Shell History Settings
-$MaximumHistoryCount = 2048
+#$MaximumHistoryCount = 2048
 $Global:HistFile = "$HOME\.history.csv"
 $truncateLogLines = 100
 
@@ -25,26 +22,20 @@ $truncateLogLines = 100
 $Shell = $Host.UI.RawUI
 
 # Custom Module Imports
-#$CustomModules = "$HOME\Documents\WindowsPowerShell\modules.ps1"
 If ( Test-Path -Path "$HOME\Documents\WindowsPowerShell\modules.ps1" ) {
     . "$HOME\Documents\WindowsPowerShell\modules.ps1"
 }
-#Clear-Variable -Name "CustomModules" -ErrorAction SilentlyContinue
 
 # Import Modules
-#$Modules = $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name
 foreach ( $Module in $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name ) {
     Import-Module $Module -ErrorAction SilentlyContinue
 }
-#Clear-Variable -Name "Modules" -ErrorAction SilentlyContinue
 Clear-Variable -Name "Module" -ErrorAction SilentlyContinue
 
 # Import Functions
-#$Functions = $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -Files).Name
 ForEach ( $Function in $(Get-ChildItem -Path "$dotposh\functions\*.ps1" -File).Name ) {
     Import-Module "$dotposh\functions\$Function" -ErrorAction SilentlyContinue
 }
-#Clear-Variable -Name "Functions" -ErrorAction SilentlyContinue
 Clear-Variable -Name "Function" -ErrorAction SilentlyContinue
 
 # Create the Scripts: drive
@@ -53,18 +44,6 @@ If ((Test-Path -Path "$HOME\scripts") -and (Test-Path -Path "$HOME\Projects")) {
     $NULL = New-PSDrive -Name X -PSProvider FileSystem -Root "$HOME\scripts"
     $NULL = New-PSDrive -Name P -PSProvider FileSystem -Root "$HOME\Projects"
 }
-
-# History Function
-#Function work-history {
-#    $history = @()
-#    $history += '#TYPE Microsoft.PowerShell.Commands.HistoryInfo'
-#    $history += '"Id","CommandLine","ExecutionStatus","StartExecutionTime","EndExecutionTime"'
-#    if (Test-Path $histfile) {
-#        $history += (get-content $histfile)[-$truncateLogLines..-1] | where {$_ -match '^"\d+"'}
-#    }
-#    $history > $histfile
-#    $history | select -Unique | ConvertFrom-CSV -errorAction SilentlyContinue | Add-History -errorAction SilentlyContinue
-#}
 
 # Create edit Function, based on EDITOR variable
 if ($Env:EDITOR -eq $NULL) {
@@ -105,7 +84,7 @@ if (!( Get-Command "grep.exe" -ErrorAction SilentlyContinue )) {
 Function which($name) { Get-Command $name | Select-Object Definition }
 Function rm-rf($item) { Remove-Item $item -Recurse -Force }
 Function touch($file) { "" | Out-File $file -Encoding ASCII }
-Function hc { Get-History -count $MaximumHistoryCount }
+Function hc { Write-Output "$(Get-History).Count lines" }
 Function ep { pushd $dotposhrepo; edit . ; popd }
 Function Remove-AllPSSessions { Get-PSSession | Remove-PSSession }
 function updp { pushd $dotposh; git pull; popd }
@@ -124,18 +103,18 @@ Set-Alias -Name isa -Value Invoke-ScriptAdmin
 Set-Alias -Name exch -Value Connect-Exchange
 Set-Alias -Name kpss -Value Remove-AllPSSessions
 
-#Call Work-History Function
+# Call Work-History Function
 Work-History
 
 # http://winterdom.com/2008/08/mypowershellprompt
-function shorten-path([string] $path) { 
-   $loc = $path.Replace($HOME, '~') 
-   # remove prefix for UNC paths 
-   $loc = $loc -replace '^[^:]+::', '' 
-   # make path shorter like tabs in Vim, 
-   # handle paths starting with \\ and . correctly 
-   return ($loc -replace '\\(\.?)([^\\])[^\\]*(?=\\)','\$1$2') 
-}
+#function shorten-path([string] $path) { 
+#   $loc = $path.Replace($HOME, '~') 
+#   # remove prefix for UNC paths 
+#   $loc = $loc -replace '^[^:]+::', '' 
+#   # make path shorter like tabs in Vim, 
+#   # handle paths starting with \\ and . correctly 
+#   return ($loc -replace '\\(\.?)([^\\])[^\\]*(?=\\)','\$1$2') 
+#}
 
 # http://winterdom.com/2008/08/mypowershellprompt
 Function prompt {
@@ -156,7 +135,7 @@ Function prompt {
     Write-Host "#$([math]::abs($hid)) " -n -f $white
     Write-Host "$([net.dns]::GetHostName()) " -n -f $green
     Write-Host "{" -n -f $dcyan
-    Write-Host "$(shorten-path (pwd).Path)" -n -f $cyan
+    Write-Host "$(Shorten-Path (pwd).Path)" -n -f $cyan
     Write-Host "}" -n -f $dcyan
     Write-Host ">" -n -f $white
     return ' '
