@@ -108,7 +108,7 @@ Set-Alias -Name gcid -Value Get-ChildItemDirectory
 Set-Alias -Name ia -Value Invoke-Admin
 Set-Alias -Name ica -Value Invoke-CommandAdmin
 Set-Alias -Name isa -Value Invoke-ScriptAdmin
-Set-Alias -Name exch -Value Connect-Exchange
+#Set-Alias -Name exch -Value Connect-Exchange
 Set-Alias -Name kpss -Value Remove-AllPSSessions
 
 # Call Work-History Function
