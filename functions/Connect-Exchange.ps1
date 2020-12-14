@@ -22,10 +22,14 @@ function Connect-Exchange {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$True,ValueFromPipeline=$true)]
-        [string]$Server,
+        [string]
+        $Server,
+    
         [Parameter(Mandatory=$True,ValueFromPipeline=$true)]
-        [string]$Credential
+        [string]
+        $Credential
     )
+
     begin {
         $UserCredential = Get-Credential("$Credential")
         if (!(Test-Connection -Count 1 -ComputerName $Server -Quiet )) {
@@ -33,10 +37,12 @@ function Connect-Exchange {
             Break
         }
     }
+
     process {
         $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$Server/PowerShell/ -Authentication Kerberos -Credential $UserCredential
         Import-PSSession $Session -DisableNameChecking
     }
+    
     end {
         Clear-Variable -Name "Server" -ErrorAction SilentlyContinue
         Clear-Variable -Name "Credential" -ErrorAction SilentlyContinue
