@@ -21,9 +21,9 @@ function Connect-Exchange {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory=$True,ValueFromPipeline=$true)]
         [string]$Server,
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory=$True,ValueFromPipeline=$true)]
         [string]$Credential
     )
     begin {
