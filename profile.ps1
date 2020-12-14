@@ -26,6 +26,12 @@ If ( Test-Path -Path "$HOME\Documents\WindowsPowerShell\modules.ps1" ) {
     . "$HOME\Documents\WindowsPowerShell\modules.ps1"
 }
 
+# Custom Functions Import
+ForEach ( $Function in $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Custom\*.ps1" -File).Name ) {
+    Import-Module "$HOME\Documents\WindowsPowerShell\Custom\$Function" -ErrorAction SilentlyContinue
+}
+Clear-Variable -Name "Function" -ErrorAction SilentlyContinue
+
 # Import Modules
 foreach ( $Module in $(Get-ChildItem -Path "$HOME\Documents\WindowsPowerShell\Modules\" -Directory).Name ) {
     Import-Module $Module -ErrorAction SilentlyContinue
