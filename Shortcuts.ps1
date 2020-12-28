@@ -31,6 +31,6 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\System
 # Create System Restore Point Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Create Instant System Restore Point.lnk" `
                 -App "$Env:UserProfile\dotposh\tools\Instant_Restore_Point.vbs" `
-                -Icon "%SystemRoot%\System32\bootux.dll" `
+                -Icon "%SystemRoot%\System32\bootux.dll, 21" `
                 -Description "Create Instant System Restore Point" `
                 -Admin
