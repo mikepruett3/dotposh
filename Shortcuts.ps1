@@ -25,6 +25,12 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Hosts 
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\System Restore.lnk" `
                 -App "$Env:SystemRoot\System32\rstrui.exe" `
                 -Icon "%SystemRoot%\System32\rstrui.exe" `
-                -Description "Recover your system, using System Restore Snapshots" `
+                -Description "Recover your system, using System Restore Point" `
                 -Admin
 
+# Create System Restore Point Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Create Instant System Restore Point.lnk" `
+                -App "$Env:UserProfile\dotposh\tools\Instant_Restore_Point.vbs" `
+                -Icon "%SystemRoot%\System32\bootux.dll" `
+                -Description "Create Instant System Restore Point" `
+                -Admin
