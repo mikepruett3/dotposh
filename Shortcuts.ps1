@@ -34,3 +34,9 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Create
                 -Icon "%SystemRoot%\System32\bootux.dll, 20" `
                 -Description "Create Instant System Restore Point" `
                 -Admin
+
+# my_ahk.ahk Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\My AHK.lnk" `
+                -App "$Env:UserProfile\dotposh\ahk\my_ahk.ahk" `
+                -Icon "%UserProfile%\scoop\apps\autohotkey-installer\current\AutoHotkey.exe" `
+                -Description "My AutoHotKey Launcher" `
