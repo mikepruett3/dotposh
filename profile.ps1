@@ -98,7 +98,7 @@ function lc { Get-ChildItem -File | Rename-Item -NewName { $_.FullName.ToLower()
 function rusc { Get-ChildItem -File | Rename-Item -NewName { $_.Name -replace ' ','_' } }
 function rnn($number) { Get-ChildItem -File | Rename-Item -NewName { $_.BaseName + $number + $_.Extension } }
 function gitreset {git fetch --all; git reset --hard origin/master; git pull}
-function gp($dir) { pushd $dir; write-host $dir; git pull; popd }
+function gp { Push-Location -Path $_; write-host $_; git pull; Pop-Location }
 function Unblock-Dir($Path) { Get-ChildItem -Path '$Path' -Recurse | Unblock-File }
 
 # Alias definitions
