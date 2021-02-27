@@ -101,6 +101,7 @@ function gitreset {git fetch --all; git reset --hard origin/master; git pull}
 Remove-Item -Path alias:gp -Force
 function gp($dir) { Push-Location -Path $dir; git pull; Pop-Location }
 function Unblock-Dir($Path) { Get-ChildItem -Path '$Path' -Recurse | Unblock-File }
+function ytd($url) { youtubedl.exe $url }
 
 # Alias definitions
 Set-Alias -Name sta -Value Start-Transcript
