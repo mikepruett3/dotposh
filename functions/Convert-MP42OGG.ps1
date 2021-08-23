@@ -40,7 +40,7 @@ function Convert-MP42OGG {
             Break
         } else {
             Write-Verbose "Building a list of .mp4 files in the current directory..."
-            $Files = $(Get-ChildItem -Include *.mp4 -Recurse).Name
+            $Files = $(Get-ChildItem -Include *.mp4 -Recurse).BaseName
         }
     }
     
@@ -51,10 +51,10 @@ function Convert-MP42OGG {
             try {
                 ffmpeg.exe  -loglevel fatal `
                             -stats `
-                            -i $File `
-                            -acodec vorbis `
+                            -i "$File.mp4" `
+                            -acodec libvorbis `
                             -y `
-                            $Destination\$File
+                            "$Destination\$File.ogg"
             }
             catch {
                 Write-Error "Unable to process file $File!"
