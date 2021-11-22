@@ -20,7 +20,7 @@ function Rename-Magazines {
 
         $Folders = Get-ChildItem -Attributes Directory -Path .
         foreach ($Folder in $Folders) {
-            Rename-Magazines -Target $Folder.FullName -Verbose
+            Rename-Magazines -Path $Folder.FullName -Verbose
         }
     #> 
     
