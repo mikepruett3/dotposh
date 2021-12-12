@@ -12,7 +12,7 @@ function Convert-DAT2Alias {
         Path to the .DAT file to ingest
     .EXAMPLE
         Convert .DAT file, and export as CSV
-        > Convert-DAT2Alias -Path .\MAME.dat | Export-CSV MAME.txt
+        > Convert-DAT2Alias -Path .\MAME.dat | Export-CSV -NoTypeInformation -NoClobber MAME.txt
     #>
 
     [CmdletBinding()]
