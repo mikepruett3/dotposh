@@ -58,9 +58,10 @@ function Get-VirtualServerList {
 
         # Check if the variable $NSXEdge exists
         if (!($NSXEdge)) {
-            $Edges = Get-NSXEdge | Select-Object id, name | Out-String
-            Write-Output $Edges
-            $NSXEdge = Read-Host "No NSX Edge selected, please select one from the list"
+            Select-NSXEdge
+            #$Edges = Get-NSXEdge | Select-Object id, name | Out-String
+            #Write-Output $Edges
+            #$NSXEdge = Read-Host "No NSX Edge selected, please select one from the list"
         }
 
         # Create empty Results array
@@ -124,13 +125,13 @@ function Get-VirtualServerList {
     end {
         # Cleanup used Variables
         Write-Verbose "Cleaning up used Variables..."
-        Remove-Variable -Name "NSXEdge" -ErrorAction SilentlyContinue
+        #Remove-Variable -Name "NSXEdge" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Edges" -ErrorAction SilentlyContinue
         Remove-Variable -Name "VIPs" -ErrorAction SilentlyContinue
         Remove-Variable -Name "VIP" -ErrorAction SilentlyContinue
         Remove-Variable -Name "TempObject" -ErrorAction SilentlyContinue
-        Remove-Variable -Name "PoolID" -ErrorAction SilentlyContinue
-        Remove-Variable -Name "MonitorID" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "PoolID" -ErrorAction SilentlyContinue
+        Clear-Variable -Name "MonitorID" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Results" -ErrorAction SilentlyContinue
     }
 }
