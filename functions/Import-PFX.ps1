@@ -60,7 +60,9 @@ function Import-PFX {
         $Session = New-PSSession -ComputerName $Server -Credential $Creds
         # Test if Import-PfxCertificate command exists
         try {
-            Invoke-Command -Session $Session -ScriptBlock {Get-Command -Name Import-PfxCertificate | Out-Null}
+            Invoke-Command -Session $Session -ScriptBlock {
+                Get-Command -Name Import-PfxCertificate | Out-Null
+            }
         }
         catch {
             Write-Error "Remote Server does not have Import-PfxCertificate command!!"
@@ -70,11 +72,15 @@ function Import-PFX {
 
     process {
         # Create new Certs directory on Remote Server
-        Invoke-Command -Session $Session -ScriptBlock {New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null}
+        Invoke-Command -Session $Session -ScriptBlock {
+            New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null
+        }
         # Copy file to C:\Certs\ on Remote Server
         Copy-Item $File -Destination C:\Certs\$FileName -ToSession $Session
         # Import Certificate on Remote Server
-        Invoke-Command -Session $Session -ScriptBlock { Import-PfxCertificate –FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force –AsPlainText) | Out-Null }
+        Invoke-Command -Session $Session -ScriptBlock {
+            Import-PfxCertificate –FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force –AsPlainText) | Out-Null
+        }
     }
     
     end {
