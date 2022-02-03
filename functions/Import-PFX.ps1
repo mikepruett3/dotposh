@@ -1,4 +1,4 @@
-function Import-PFX {
+function Import-PFX{
     <#
     .SYNOPSIS
         Import PFX formatted certificate bundle to the local Certificate store
