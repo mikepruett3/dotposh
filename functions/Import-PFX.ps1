@@ -49,19 +49,15 @@ function Import-PFX {
     begin {
         # Import Credentials into $Creds
         $Creds = Get-Credential("$Credentials")
-
         # Test Server Connectivity
         if (!(Test-Connection -Count 1 -ComputerName $Server -Quiet )) {
             Write-Error "Cannot ping $Server!!!"
             Break
         }
-
         # Create var for File
         $FileName = (Get-ChildItem -Path $File).Name
-
         # Create PSSession Variable - $Session
         $Session = New-PSSession -ComputerName $Server -Credential $Creds
-
         # Test if Import-PfxCertificate command exists
         try {
             Invoke-Command -Session $Session -ScriptBlock {Get-Command -Name Import-PfxCertificate | Out-Null}
@@ -71,23 +67,12 @@ function Import-PFX {
             Break
         }
     }
-    
+
     process {
         # Create new Certs directory on Remote Server
-        try {
-            Invoke-Command -Session $Session -ScriptBlock {New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null}
-        }
-        catch {}
-        
+        Invoke-Command -Session $Session -ScriptBlock {New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null}
         # Copy file to C:\Certs\ on Remote Server
-        try {
-            Copy-Item $File -Destination C:\Certs\$FileName -ToSession $Session
-        }
-        catch {
-            Write-Error "Unable to copy the PFX Certificate to the Remote Server!!!"
-            Break
-        }
-        
+        Copy-Item $File -Destination C:\Certs\$FileName -ToSession $Session
         # Import Certificate on Remote Server
         Invoke-Command -Session $Session -ScriptBlock { Import-PfxCertificate –FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force –AsPlainText) | Out-Null }
     }
