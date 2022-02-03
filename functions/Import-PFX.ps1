@@ -90,9 +90,7 @@ function Import-PFX {
         
         # Import Certificate on Remote Server
         try {
-            Invoke-Command -Session $Session -ScriptBlock {
-                Import-PfxCertificate –FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force –AsPlainText) | Out-Null
-            }
+            Invoke-Command -Session $Session -ScriptBlock { Import-PfxCertificate –FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force –AsPlainText) | Out-Null }
         }
         catch {
             Write-Error "Importing PFX Certificate failed on the Remote Server!!!"
