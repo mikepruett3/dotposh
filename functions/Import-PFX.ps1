@@ -58,14 +58,8 @@ function Import-PFX {
         # Create PSSession Variable - $Session
         $Session = New-PSSession -ComputerName $Server -Credential $Creds
         # Test if Import-PfxCertificate command exists
-        try {
-            Invoke-Command -Session $Session -ScriptBlock{
-                Get-Command -Name Import-PfxCertificate | Out-Null
-            }
-        }
-        catch {
-            Write-Error "Remote Server does not have Import-PfxCertificate command!!"
-            Break
+        Invoke-Command -Session $Session -ScriptBlock{
+            Get-Command -Name Import-PfxCertificate | Out-Null
         }
     }
 
