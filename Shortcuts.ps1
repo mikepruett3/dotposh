@@ -31,7 +31,7 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Enviro
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Hosts File.lnk" `
                 -App "$Env:SystemRoot\System32\notepad.exe" `
                 -Arguments "$Env:SystemRoot\System32\drivers\etc\hosts" `
-                -Icon "%SystemRoot%\System32\imageres.dll, 54" `
+                -Icon "%SystemRoot%\System32\imageres.dll, 73" `
                 -Description "Edit the Hosts file with Notepad, running as Administrator" `
                 -Admin
 
