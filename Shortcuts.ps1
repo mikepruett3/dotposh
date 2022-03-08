@@ -79,4 +79,4 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\My AHK
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\scrt.lnk" `
                 -App "$Env:LocalAppData\VanDyke Software\SecureCRT\SecureCRT.exe" `
                 -Icon "%LocalAppData%\VanDyke Software\SecureCRT\SecureCRT.exe" `
-                -Description "SecureCRT" `
+                -Description "SecureCRT"
