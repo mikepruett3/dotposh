@@ -6,7 +6,7 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Key Ma
                 -Description "Windows Key Manager" `
 
 # Windows Credential Manager Shortcut
-Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Key Manager.lnk" `
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Credential Manager.lnk" `
                 -App "$Env:SystemRoot\System32\control.exe" `
                 -Arguments "/name Microsoft.CredentialManager" `
                 -Icon "%SystemRoot%\System32\imageres.dll, 54" `
