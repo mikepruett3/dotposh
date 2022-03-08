@@ -28,14 +28,14 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Admini
 # Active Directory Administration Center Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\dsac.lnk" `
                 -App "$Env:SystemRoot\System32\runas.exe" `
-                -Arguments "/savecred /user:$Env:FAPS cmd /C Start /B %SYSTEMROOT%\System32\dsac.exe" `
+                -Arguments "/noprofile /env /savecred /user:$Env:FAPS ""cmd /C Start /B %SYSTEMROOT%\System32\dsac.exe""" `
                 -Icon "%SystemRoot%\System32\dsac.exe" `
                 -Description "Active Directory Administration Center" `
 
 # Active Directory Users & Computers Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\ad.lnk" `
                 -App "$Env:SystemRoot\System32\runas.exe" `
-                -Arguments "/savecred /user:$Env:FAPS cmd /C Start /B %SYSTEMROOT%\System32\mmc.exe %SYSTEMROOT%\System32\dsa.msc" `
+                -Arguments "/noprofile /env /savecred /user:$Env:FAPS ""cmd /C Start /B %SYSTEMROOT%\System32\mmc.exe %SYSTEMROOT%\System32\dsa.msc""" `
                 -Icon "%SystemRoot%\system32\dsadmin.dll, 0" `
                 -Description "Active Directory Users & Computers" `
 
