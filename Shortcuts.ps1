@@ -74,3 +74,9 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\My AHK
                 -App "$Env:UserProfile\dotposh\ahk\my_ahk.ahk" `
                 -Icon "%UserProfile%\scoop\apps\autohotkey-installer\current\AutoHotkey.exe" `
                 -Description "My AutoHotKey Launcher"
+
+# SecureCRT Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\scrt.lnk" `
+                -App "$Env:LocalAppData\VanDyke Software\SecureCRT\SecureCRT.exe" `
+                -Icon "%LocalAppData%\VanDyke Software\SecureCRT\SecureCRT.exe" `
+                -Description "SecureCRT" `
