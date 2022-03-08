@@ -39,4 +39,4 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Create
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\My AHK.lnk" `
                 -App "$Env:UserProfile\dotposh\ahk\my_ahk.ahk" `
                 -Icon "%UserProfile%\scoop\apps\autohotkey-installer\current\AutoHotkey.exe" `
-                -Description "My AutoHotKey Launcher" `
+                -Description "My AutoHotKey Launcher"
