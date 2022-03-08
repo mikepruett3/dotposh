@@ -16,7 +16,7 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Creden
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Administrative Tools.lnk" `
                 -App "$Env:SystemRoot\System32\control.exe" `
                 -Arguments "/name Microsoft.AdministrativeTools" `
-                -Icon "%SystemRoot%\System32\imageres.dll, 110" `
+                -Icon "%SystemRoot%\System32\imageres.dll, 109" `
                 -Description "Administrative Tools" `
 
 # Environment Variables Shortcut
