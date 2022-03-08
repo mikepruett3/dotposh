@@ -12,6 +12,13 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Creden
                 -Icon "%SystemRoot%\System32\imageres.dll, 54" `
                 -Description "Windows Credential Manager" `
 
+# Administrative Tools Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Administrative Tools.lnk" `
+                -App "$Env:SystemRoot\System32\control.exe" `
+                -Arguments "/name Microsoft.AdministrativeTools" `
+                -Icon "%SystemRoot%\System32\imageres.dll, 110" `
+                -Description "Administrative Tools" `
+
 # Environment Variables Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Environment Variables.lnk" `
                 -App "$Env:SystemRoot\System32\rundll32.exe" `
