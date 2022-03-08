@@ -36,7 +36,7 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\dsac.l
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\ad.lnk" `
                 -App "$Env:SystemRoot\System32\runas.exe" `
                 -Arguments "/savecred /user:$Env:FAPS ""cmd /C Start /B %SYSTEMROOT%\System32\mmc.exe %SYSTEMROOT%\System32\dsa.msc""" `
-                -Icon "%SystemRoot%\system32\dsadmin.dll, 1" `
+                -Icon "%SystemRoot%\system32\dsadmin.dll, 0" `
                 -Description "Active Directory Users & Computers" `
 
 # Environment Variables Shortcut
