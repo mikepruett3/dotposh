@@ -28,7 +28,7 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Admini
 # Active Directory Administration Center Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\dsac.lnk" `
                 -App "$Env:SystemRoot\System32\runas.exe" `
-                -Arguments "/savecred /user:$Env:FAPS 'cmd /C Start /B %SYSTEMROOT%\System32\dsac.exe'" `
+                -Arguments "/savecred /user:$Env:FAPS ""cmd /C Start /B %SYSTEMROOT%\System32\dsac.exe""" `
                 -Icon "%SystemRoot%\System32\dsac.exe" `
                 -Description "Active Directory Administration Center" `
 
