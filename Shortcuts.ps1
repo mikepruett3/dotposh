@@ -12,12 +12,25 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Creden
                 -Icon "%SystemRoot%\System32\imageres.dll, 54" `
                 -Description "Windows Credential Manager" `
 
+# Windows Credential Backup Utility Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Credential Backup Utility.lnk" `
+                -App "$Env:SystemRoot\System32\credwiz.exe" `
+                -Icon "%SystemRoot%\System32\credwiz.exe" `
+                -Description "Windows Credential Backup Utility" `
+
 # Administrative Tools Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Administrative Tools.lnk" `
                 -App "$Env:SystemRoot\System32\control.exe" `
                 -Arguments "/name Microsoft.AdministrativeTools" `
                 -Icon "%SystemRoot%\System32\imageres.dll, 109" `
                 -Description "Administrative Tools" `
+
+# Active Directory Administration Center Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\dsac.lnk" `
+                -App "$Env:SystemRoot\System32\runas.exe" `
+                -Arguments "/savecred /user:%FAPS% 'cmd /C Start /B %SYSTEMROOT%\System32\dsac.exe'" `
+                -Icon "%SystemRoot%\System32\dsac.exe" `
+                -Description "Active Directory Administration Center" `
 
 # Environment Variables Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Environment Variables.lnk" `
