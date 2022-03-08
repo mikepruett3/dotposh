@@ -5,6 +5,13 @@ Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Key Ma
                 -Icon "%SystemRoot%\System32\imageres.dll, 77" `
                 -Description "Windows Key Manager" `
 
+# Windows Credential Manager Shortcut
+Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Key Manager.lnk" `
+                -App "$Env:SystemRoot\System32\control.exe" `
+                -Arguments "/name Microsoft.CredentialManager" `
+                -Icon "%SystemRoot%\System32\imageres.dll, 54" `
+                -Description "Windows Credential Manager" `
+
 # Environment Variables Shortcut
 Create-Shortcut -Link "$Env:AppData\Microsoft\Windows\Start Menu\Programs\Environment Variables.lnk" `
                 -App "$Env:SystemRoot\System32\rundll32.exe" `
