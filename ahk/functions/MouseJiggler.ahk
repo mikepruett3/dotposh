@@ -13,13 +13,13 @@ Loop
          MouseMove,xPos, yPos
          oldX = %xPos%
          oldY = %yPos%
-         ;Sleep, 90000
-         Sleep, 9000
+         Sleep, 90000
+         ;Sleep, 9000
       } else {
          oldX = %xPos%
          oldY = %yPos%
-         ;Sleep, 30000
-         Sleep, 3000
+         Sleep, 30000
+         ;Sleep, 3000
       }
    }
 }
