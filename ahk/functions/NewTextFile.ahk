@@ -1,38 +1,31 @@
-SetTitleMatchMode RegEx
+;SetTitleMatchMode RegEx
 
-#IfWinActive ahk_class ExploreWClass|CabinetWClass
+#If WinActive("ahk_class ExploreWClass") || WinActive("ahk_class CabinetWClass")
     ; <CTRL> + <SHIFT> + T
     ^+t::
-        NewTextFile()
+        Path := GetActiveExplorerPath()
+        NoFile = 0
+        Loop
+        {
+            IfExist, %Path%\NewTextFile%NoFile%.txt
+            {
+                NoFile++
+            } Else {
+                Break
+            }
+        }
+        FileAppend, ,%Path%\NewTextFile%NoFile%.txt
     Return
 #IfWinActive
 
-NewTextFile() {
-    WinGetText, full_path, A
-    StringSplit, word_array, full_path, `n
-    Loop, %word_array0% {
-		IfInString, word_array%A_Index%, Address
-		{
-			full_path := word_array%A_Index%
-			break
+; https://www.autohotkey.com/boards/viewtopic.php?t=69925
+GetActiveExplorerPath() {
+	explorerHwnd := WinActive("ahk_class CabinetWClass")
+	if (explorerHwnd) {
+		for window in ComObjCreate("Shell.Application").Windows {
+			if (window.hwnd==explorerHwnd) {
+				return window.Document.Folder.Self.Path
+			}
 		}
 	}
-    full_path := RegExReplace(full_path, "^Address: ", "")
-    StringReplace, full_path, full_path, `r, , all
-    
-    IfInString full_path, \
-    {
-        NoFile = 0
-        Loop {
-            IfExist %full_path%\NewTextFile%NoFile%.txt
-            {
-                NoFile++
-            } else {
-                break
-            }
-        }
-        FileAppend, ,%full_path%\NewTextFile%NoFile%.txt
-    } else {
-        return
-    }
 }
