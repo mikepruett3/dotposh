@@ -1,35 +1,137 @@
-; Create a variable of folders w/ AHK files to Include
-IncludeFolders = 
-(comments ltrim
-    %A_WorkingDir%\functions
-)
+#NoEnv                     ; Reccomended for performace and compatability with future AutoHotKey releases.
+#SingleInstance Force      ; Starts all Included AutoHotKey Scripts as one - https://stackoverflow.com/questions/4565321/autohotkey-calling-one-script-from-another-script
+;#Warn                     ; Enable warnings to assist with detecting common errors.
+SendMode Input             ; Reccomended for new scripts due to its superior speed and reliability.
 
-; Set Variable for Output file
-;OutputFileName = %A_Temp%\my_ahk.ahk
+;========== Run MouseJiggler AutoHotKey Script ==========
+#Include, %A_WorkingDir%\Custom\Custom.ahk
 
-; Delete the previous Output file
-;If FileExist("%OutputFileName%")
-;FileDelete, %OutputFileName%
-
-; Loop thru all of the folders in the Include variable,
-; and generate a new Output file to include
-Loop, Parse, IncludeFolders, `n
+;========== Run MouseJiggler AutoHotKey Script ==========
+;#Include, %A_WorkingDir%\Scripts\MouseJiggler.ahk
+pathToScript = %A_WorkingDir%\Scripts\MouseJiggler.ahk
+DetectHiddenWindows, On
+IfWinNotExist, %pathToScript%
 {
-    ;MsgBox, %A_LoopField%
-    Loop, %A_LoopField%\*.ahk, 0, 1
-    {
-        ;MsgBox %A_LoopFilePath%
-        ;FileAppend, #Include %A_LoopFilePath% `n, %OutputFileName%
-        Run, %A_LoopFilePath%
-    }
-    
+    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
 }
 
-; Include the new Output file
-; Special Remark - https://www.autohotkey.com/docs/commands/_Include.htm#Remarks
-;#Include *i %A_Temp%\my_ahk.ahk
+;========== Text Replacement Hotkeys ==========
+:*:omw::
+SendInput On My Way{!}
+SendInput {Enter}
+Return
 
-; <Win> + <Shift> + X
-#+x::
-Process, Close, AutoHotkey.exe
+:*:btw::
+SendInput By the way,
+SendInput {Space}
+Return
+
+:*:ty::
+SendInput Thank You
+SendInput {Enter}
+Return
+
+:*:np::
+SendInput No Problem
+SendInput {Enter}
+Return
+
+:*:kk::
+SendInput ok
+SendInput {Enter}
+Return
+
+:*:ttt::
+FormatTime, Time
+SendRaw, %Time%
+Return
+
+::asshole::
+SendInput I'm open to hearing what you have to say and having a discussion about it, but I have a policy of ignoring people who take a malicious approach to conversation. I felt something that you said fell under this heading, and if you'd like to try again with a kinder approach, I'd be happy to have a conversation with you.
+SendInput {Enter}
+Return
+
+::safeharbor::
+SendInput This message is intended only for the use of the individual or entity to which it is addressed. If the reader of this message is not the intended recipient, or the employee or agent responsible for delivering the message to the intended recipient, you are hereby notified that any dissemination, distribution or copying of this message is strictly prohibited. If you have received this communication in error, please notify us immediately by replying to the sender of this E-Mail or by telephone.
+SendInput {Enter}
+Return
+
+#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
+{
+    ;========== New Text File Hotkey ==========
+    ; CTRL + SHIFT + T
+    ^+t::
+    Path := GetActiveExplorerPath()
+    NoFile = 0
+    Loop
+    {
+        IfExist, %Path%\NewTextFile%NoFile%.txt
+        {
+            NoFile++
+        } Else {
+            Break
+        }
+    }
+    FileAppend, ,%Path%\NewTextFile%NoFile%.txt
+    Return
+
+    ;========== Show and Hide Hidden Files Hotkey ==========
+    ; CTRL + F2
+    ^F2::
+    ToggleHiddenFilesDisplay()
+    Return
+
+    ;========== Move Up a Folder in File Explorer Hotkey ==========
+    ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
+    ; BackSpace
+    BackSpace::
+    Send !{Up}
+    Return
+}
+#If
+
+;========== Hide/Show Taskbar Hotkey ==========
+; CTRL + SHIFT + F12
+^+F12::
+HideShowTaskbar(hide := !hide)
+Return
+
+;========== Empty Recycle Bin Hotkey ==========
+; https://www.maketecheasier.com/favorite-autohotkey-scripts/
+; Win + Delete
+#Del::
+FileRecycleEmpty
+Return
+
+;========== Temporarily Suspend AutoHotkey Hotkey ==========
+; https://www.maketecheasier.com/favorite-autohotkey-scripts/
+; Win + ScrollLock
+#ScrollLock::
+SplashTextOn,200,50,AutoHotKeySystem,`nSuspending Hotkeys...
+Sleep, 500
+Suspend
+SplashTextOff
+Return
+
+;========== Reload AutoHotkey Hotkey ==========
+; CTRL + R
+^R::
+SplashTextOn,100,50,AutoHotKeySystem,`nReloading...
+Sleep, 500
+Reload
+SplashTextOff
+Return
+
+;========== Show IP Address Hotkey ==========
+; CTRL + SHIFT + I
+^+I::
+;SplashTextOn,150,50,IPAddress,Your IP Address:`n%A_IPAddress1%
+;Sleep, 1000
+;SplashTextOff
+ToolTip, Your IP Address:`n%A_IPAddress1%...
+SetTimer, RemoveToolTip, -2000
+Return
+
+RemoveToolTip:
+ToolTip
 Return
