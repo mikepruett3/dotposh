@@ -1,0 +1,15 @@
+MinMaxWindow(WindowID) {
+    WinGet, WindowStatus, MinMax, ahk_id %WindowID%
+    If (WindowStatus==1)
+    {
+        ; Window Maximized
+        ;MsgBox, Minimizing
+        WinMinimize, ahk_id %WindowID%
+    } Else {
+        ; Window Minimized
+        ;MsgBox, Maximizing
+        WinRestore, ahk_id %WindowID%
+        WinActivate
+        Return WindowID =
+    }
+}
