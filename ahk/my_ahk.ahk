@@ -24,7 +24,7 @@ If InStr(RunOnSystems, SystemType)
 ;========== Text Replacement Hotkeys ==========
 :*:omw::
 SendInput, On My Way{!}
-SendInput, {Enter}
+SendInput, {Space}
 Return
 
 :*:btw::
@@ -34,17 +34,17 @@ Return
 
 :*:ty::
 SendInput, Thank You
-SendInput, {Enter}
+SendInput, {Space}
 Return
 
 :*:np::
 SendInput, No Problem
-SendInput, {Enter}
+SendInput, {Space}
 Return
 
 :*:kk::
 SendInput, ok
-SendInput, {Enter}
+SendInput, {Space}
 Return
 
 :*:ttt::
