@@ -11,12 +11,12 @@ SendMode, Input            ; Reccomended for new scripts due to its superior spe
 ;}
 ;DetectHiddenWindows, Off
 
-SystemType := GetChassisType()
-RunOnSystems := "Portable Laptop Notebook Handheld DockingStation All-in-One Sub-Notebook LunchBox"
-If InStr(RunOnSystems, SystemType)
-{
-    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
-}
+;SystemType := GetChassisType()
+;RunOnSystems := "Portable Laptop Notebook Handheld DockingStation All-in-One Sub-Notebook LunchBox"
+;If InStr(RunOnSystems, SystemType)
+;{
+;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
+;}
 
 ;========== Include Custom AutoHotKey Script ==========
 #Include, %A_WorkingDir%\Custom\Custom.ahk
@@ -32,10 +32,10 @@ SendInput, By the way,
 SendInput, {Space}
 Return
 
-:*:ty::
-SendInput, Thank You
-SendInput, {Space}
-Return
+;:*:ty::
+;SendInput, Thank You
+;SendInput, {Space}
+;Return
 
 :*:np::
 SendInput, No Problem
@@ -60,39 +60,39 @@ Return
 safeharbor()
 Return
 
-#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
-{
-    ;========== New Text File Hotkey ==========
-    ; CTRL + SHIFT + T
-    ^+t::
-    Path := GetActiveExplorerPath()
-    NoFile = 0
-    Loop
-    {
-        IfExist, %Path%\NewTextFile%NoFile%.txt
-        {
-            NoFile++
-        } Else {
-            Break
-        }
-    }
-    FileAppend, ,%Path%\NewTextFile%NoFile%.txt
-    Return
-
-    ;========== Show and Hide Hidden Files Hotkey ==========
-    ; CTRL + F2
-    ^F2::
-    ToggleHiddenFilesDisplay()
-    Return
-
-    ;========== Move Up a Folder in File Explorer Hotkey ==========
-    ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
-    ; BackSpace
-    BackSpace::
-    Send, !{Up}
-    Return
-}
-#If
+;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
+;{
+;    ;========== New Text File Hotkey ==========
+;    ; CTRL + SHIFT + T
+;    ^+t::
+;    Path := GetActiveExplorerPath()
+;    NoFile = 0
+;    Loop
+;    {
+;        IfExist, %Path%\NewTextFile%NoFile%.txt
+;        {
+;            NoFile++
+;        } Else {
+;            Break
+;        }
+;    }
+;    FileAppend, ,%Path%\NewTextFile%NoFile%.txt
+;    Return
+;
+;    ;========== Show and Hide Hidden Files Hotkey ==========
+;    ; CTRL + F2
+;    ^F2::
+;    ToggleHiddenFilesDisplay()
+;    Return
+;
+;    ;========== Move Up a Folder in File Explorer Hotkey ==========
+;    ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
+;    ; BackSpace
+;    BackSpace::
+;    Send, !{Up}
+;    Return
+;}
+;#If
 
 ;========== MacOS "Command-M"-like Hotkey ==========
 ; Lifted from RamValli's post - https://stackoverflow.com/questions/42918534/autohotkey-script-to-toggle-minimize-maximize-window
@@ -166,7 +166,7 @@ SplashTextOn,100,50,AutoHotKeySystem,`nReloading...
 Sleep, 500
 Reload
 SplashTextOff
-Return 
+Return
 
 ;========== Show IP Address Hotkey ==========
 ; CTRL + SHIFT + I
