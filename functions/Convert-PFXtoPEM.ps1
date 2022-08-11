@@ -15,7 +15,7 @@ function Convert-PFXtoPEM {
     .PARAMETER Path
         PFX formatted file to convert/extract, encapsulated in "quotes"
     .PARAMETER Passphrase
-        Password for the PFX formatted file to convert/extract, encapsulated in "quotes"
+        Plain-Text Password for the PFX formatted file to convert/extract, encapsulated in "quotes".
     .EXAMPLE
         > Convert-PFXtoPEM -Path "C:\temp\mycerts.pfx" -Passphrase "MyPassword"
     #>
