@@ -25,7 +25,7 @@ function Convert-PFXtoPEM {
         $Path,
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [string]
-        $PFXPass
+        $Password
     )
 
     begin {
@@ -40,17 +40,18 @@ function Convert-PFXtoPEM {
         $FileName = (Get-ChildItem $Path).BaseName
 
         # Collect PFX file password
+        $PFXPass = ConvertTo-SecureString $Password -AsPlainText -Force
         #$PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
-        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
-        Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
+        #$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
+        #Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
     }
 
     process {
-        Write-Output $Env:PFXPass
+        Write-Output $PFXPass
 
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
-        openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key"
+        #openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key"
         #catch {
         #    Write-Error "Unable to extract Private key from file $Path!"
         #    Break
