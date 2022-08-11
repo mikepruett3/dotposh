@@ -42,12 +42,12 @@ function Convert-PFXtoPEM {
         # Collect PFX file password
         $PFXPass = ConvertTo-SecureString $Password -AsPlainText -Force
         #$PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
-        #$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
+        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
         #Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
     }
 
     process {
-        #Write-Output $PFXPass
+        Write-Output $BSTR
 
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
