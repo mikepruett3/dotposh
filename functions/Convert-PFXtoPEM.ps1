@@ -24,7 +24,7 @@ function Convert-PFXtoPEM {
         [string]
         $Path
     )
-    
+
     begin {
         # Check if openssl.exe is in the path, if not break
         Write-Verbose "Check if openssl.exe is in the path..."
@@ -36,7 +36,7 @@ function Convert-PFXtoPEM {
         # Collect Filename
         $FileName = (Get-ChildItem $Path).BaseName
     }
-    
+
     process {
         # Collect PFX file password
         $PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
@@ -45,25 +45,25 @@ function Convert-PFXtoPEM {
 
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
-        try { openssl pkcs12 -in "$Path" -nocerts -nodes -password env:PFXPass | openssl pkcs8 -nocrypt -out "$FileName.key" }
+        try { openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"${PFXPass}" | openssl pkcs8 -nocrypt -out "$FileName.key" }
         catch {
             Write-Error "Unable to extract Private key from file $Path!"
             Break
         }
         Write-Verbose "Extracting Certificate from $Path, and writing to $Path.crt"
-        try { openssl pkcs12 -in "$Path" -clcerts -nokeys -password env:PFXPass | openssl x509 -out "$FileName.crt" }
+        try { openssl pkcs12 -in "$Path" -clcerts -nokeys -passin pass:"${PFXPass}" | openssl x509 -out "$FileName.crt" }
         catch {
             Write-Error "Unable to extract Certificate from file $Path!"
             Break
         }
         Write-Verbose "Extracting CA Certificates from $Path, and writing to $Path.chain.cer"
-        try { openssl pkcs12 -in "$Path" -cacerts -nokeys -chain -password env:PFXPass -out "$FileName.chain.cer" }
+        try { openssl pkcs12 -in "$Path" -cacerts -nokeys -chain -passin pass:"${PFXPass}" -out "$FileName.chain.cer" }
         catch {
             Write-Error "Unable to extract CA Certificates from file $Path!"
             Break
         }
     }
-    
+
     end {
         # Cleanup
         Write-Verbose "Cleaning up used Variables..."
