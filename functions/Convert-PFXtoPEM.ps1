@@ -14,8 +14,10 @@ function Convert-PFXtoPEM {
         FFmpeg - https://www.openssl.org
     .PARAMETER Path
         PFX formatted file to convert/extract, encapsulated in "quotes"
+    .PARAMETER Passphrase
+        Password for the PFX formatted file to convert/extract, encapsulated in "quotes"
     .EXAMPLE
-        > Convert-PFXtoPEM -Path "C:\temp\mycerts.pfx"
+        > Convert-PFXtoPEM -Path "C:\temp\mycerts.pfx" -Passphrase "MyPassword"
     #>
     [CmdletBinding()]
     param (
@@ -25,7 +27,7 @@ function Convert-PFXtoPEM {
         $Path,
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [string]
-        $Password
+        $Passphrase
     )
 
     begin {
@@ -38,43 +40,36 @@ function Convert-PFXtoPEM {
 
         # Collect Filename
         $FileName = (Get-ChildItem $Path).BaseName
-
-        # Collect PFX file password
-        #$PFXPass = ConvertTo-SecureString $Password -AsPlainText -Force
-        #$PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
-        #$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
-        #Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
     }
 
     process {
         # Convert/Extract the PFX file
+        # Added "-legacy" option to support newer OpenSSL Versions - https://stackoverflow.com/questions/72598983/curl-openssl-error-error0308010cdigital-envelope-routinesunsupported
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
-        openssl pkcs12 -in "$Path" -legacy -nocerts -nodes -passin pass:"$Password" | openssl pkcs8 -nocrypt -out "$FileName.key"
-        #catch {
-        #    Write-Error "Unable to extract Private key from file $Path!"
-        #    Break
-        #}
-        #Write-Verbose "Extracting Certificate from $Path, and writing to $Path.crt"
-        #try { openssl pkcs12 -in "$Path" -clcerts -nokeys -passin $Env:PFXPass | openssl x509 -out "$FileName.crt" }
-        #catch {
-        #    Write-Error "Unable to extract Certificate from file $Path!"
-        #    Break
-        #}
-        #Write-Verbose "Extracting CA Certificates from $Path, and writing to $Path.chain.cer"
-        #try { openssl pkcs12 -in "$Path" -cacerts -nokeys -chain -passin $Env:PFXPass -out "$FileName.chain.cer" }
-        #catch {
-        #    Write-Error "Unable to extract CA Certificates from file $Path!"
-        #    Break
-        #}
+        try { openssl pkcs12 -in "$Path" -legacy -nocerts -nodes -passin pass:"$Passphrase" | openssl pkcs8 -nocrypt -out "$FileName.key" }
+        catch {
+            Write-Error "Unable to extract Private key from file $Path!"
+            Break
+        }
+        Write-Verbose "Extracting Certificate from $Path, and writing to $Path.crt"
+        try { openssl pkcs12 -in "$Path" -legacy -clcerts -nokeys -passin pass:"$Passphrase" | openssl x509 -out "$FileName.crt" }
+        catch {
+            Write-Error "Unable to extract Certificate from file $Path!"
+            Break
+        }
+        Write-Verbose "Extracting CA Certificates from $Path, and writing to $Path.chain.cer"
+        try { openssl pkcs12 -in "$Path" -legacy -cacerts -nokeys -chain -passin pass:"$Passphrase" -out "$FileName.chain.cer" }
+        catch {
+            Write-Error "Unable to extract CA Certificates from file $Path!"
+            Break
+        }
     }
 
     end {
         # Cleanup
         Write-Verbose "Cleaning up used Variables..."
-        Clear-Variable -Name "Path" -Scope Global -ErrorAction SilentlyContinue
-        Clear-Variable -Name "FileName" -Scope Global -ErrorAction SilentlyContinue
-        Clear-Variable -Name "PFXPass" -Scope Global -ErrorAction SilentlyContinue
-        Clear-Variable -Name "BSTR" -Scope Global -ErrorAction SilentlyContinue
-        #Remove-Item -Path Env:PFXPass
+        Remove-Variable -Name "Path" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "FileName" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Passphrase" -ErrorAction SilentlyContinue
     }
 }
