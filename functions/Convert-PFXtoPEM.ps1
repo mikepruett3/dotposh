@@ -63,6 +63,12 @@ function Convert-PFXtoPEM {
             Write-Error "Unable to extract CA Certificates from file $Path!"
             Break
         }
+        Write-Verbose "Converting PFX from $Path, into a combined PEM file with Key, Certificate and CA Certificate Bundle; and writing to $Path.chain.cer"
+        try { openssl pkcs12 -in "$Path" -legacy -passin pass:"$Passphrase" -passout pass:"$Passphrase" -out "$FileName.pem" }
+        catch {
+            Write-Error "Unable to extract CA Certificates from file $Path!"
+            Break
+        }
     }
 
     end {
