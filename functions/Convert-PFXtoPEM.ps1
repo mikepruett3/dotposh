@@ -46,23 +46,23 @@ function Convert-PFXtoPEM {
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
         Write-Output $Env:PFXPass
-        try { openssl pkcs12 -in "$Path" -nocerts -nodes -passin $Env:PFXPass | openssl pkcs8 -nocrypt -out "$FileName.key" }
+        try { openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$Env:PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key" }
         catch {
             Write-Error "Unable to extract Private key from file $Path!"
             Break
         }
-        Write-Verbose "Extracting Certificate from $Path, and writing to $Path.crt"
-        try { openssl pkcs12 -in "$Path" -clcerts -nokeys -passin $Env:PFXPass | openssl x509 -out "$FileName.crt" }
-        catch {
-            Write-Error "Unable to extract Certificate from file $Path!"
-            Break
-        }
-        Write-Verbose "Extracting CA Certificates from $Path, and writing to $Path.chain.cer"
-        try { openssl pkcs12 -in "$Path" -cacerts -nokeys -chain -passin $Env:PFXPass -out "$FileName.chain.cer" }
-        catch {
-            Write-Error "Unable to extract CA Certificates from file $Path!"
-            Break
-        }
+        #Write-Verbose "Extracting Certificate from $Path, and writing to $Path.crt"
+        #try { openssl pkcs12 -in "$Path" -clcerts -nokeys -passin $Env:PFXPass | openssl x509 -out "$FileName.crt" }
+        #catch {
+        #    Write-Error "Unable to extract Certificate from file $Path!"
+        #    Break
+        #}
+        #Write-Verbose "Extracting CA Certificates from $Path, and writing to $Path.chain.cer"
+        #try { openssl pkcs12 -in "$Path" -cacerts -nokeys -chain -passin $Env:PFXPass -out "$FileName.chain.cer" }
+        #catch {
+        #    Write-Error "Unable to extract CA Certificates from file $Path!"
+        #    Break
+        #}
     }
 
     end {
