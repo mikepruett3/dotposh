@@ -47,11 +47,11 @@ function Convert-PFXtoPEM {
     }
 
     process {
-        Write-Output $PFXPass
+        #Write-Output $PFXPass
 
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
-        #openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key"
+        openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key"
         #catch {
         #    Write-Error "Unable to extract Private key from file $Path!"
         #    Break
