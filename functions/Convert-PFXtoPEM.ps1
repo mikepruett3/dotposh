@@ -22,7 +22,10 @@ function Convert-PFXtoPEM {
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [ValidateScript({Test-Path $_ -PathType 'Leaf'})]
         [string]
-        $Path
+        $Path,
+        [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
+        [string]
+        $PFXPass
     )
 
     begin {
@@ -35,17 +38,18 @@ function Convert-PFXtoPEM {
 
         # Collect Filename
         $FileName = (Get-ChildItem $Path).BaseName
+
+        # Collect PFX file password
+        #$PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
+        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
+        Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
     }
 
     process {
-        # Collect PFX file password
-        $PFXPass = Read-Host "Enter PFX File Password" -AsSecureString
-        $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($PFXPass)
-        Set-Item -Path Env:PFXPass -Value ([System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR))
+        Write-Output $Env:PFXPass
 
         # Convert/Extract the PFX file
         Write-Verbose "Extracting Private Key from $Path, and writing to $Path.key"
-        Write-Output $PFXPass
         openssl pkcs12 -in "$Path" -nocerts -nodes -passin pass:"$PFXPass" | openssl pkcs8 -nocrypt -out "$FileName.key"
         #catch {
         #    Write-Error "Unable to extract Private key from file $Path!"
