@@ -1,3 +1,4 @@
+# https://swimburger.net/blog/powershell/convertfrom-securestring-a-parameter-cannot-be-found-that-matches-parameter-name-asplaintext
 function ConvertFrom-SecureString-AsPlainText {
     [CmdletBinding()]
     param (
