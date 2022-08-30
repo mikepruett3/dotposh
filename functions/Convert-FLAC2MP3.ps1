@@ -37,16 +37,16 @@ function Convert-FLAC2MP3 {
         $Destination = $Destination.TrimEnd('\')
 
         # Create var for File Extension
-        $Ext = "flac"
+        $SrcExt = "flac"
 
         # Check for .mp4 files in the current directory, if not break
-        Write-Verbose "Check for .$Ext files in the current directory..."
-        if ( ! ( Get-ChildItem -Recurse -Filter "*.$Ext" ) ) {
-            Write-Error "No .$Ext files found in current directory!"
+        Write-Verbose "Check for .$SrcExt files in the current directory..."
+        if ( ! ( Get-ChildItem -Recurse -Filter "*.$SrcExt" ) ) {
+            Write-Error "No .$SrcExt files found in current directory!"
             Break
         } else {
-            Write-Verbose "Building a list of .$Ext files in the current directory..."
-            $Files = $(Get-ChildItem -Include *.$Ext -Recurse).BaseName
+            Write-Verbose "Building a list of .$SrcExt files in the current directory..."
+            $Files = $(Get-ChildItem -Include *.$SrcExt -Recurse).BaseName
             Write-Verbose "Creating Variables based on current path..."
             $CurrentDir = $(Split-Path -Path (Get-Location) -Parent)
             $Parent = $(Split-Path -Path $CurrentDir -Leaf)
@@ -73,7 +73,7 @@ function Convert-FLAC2MP3 {
             try {
                 ffmpeg.exe  -loglevel fatal `
                             -stats `
-                            -i "$File.$Ext" `
+                            -i "$File.$SrcExt" `
                             -ab 320k `
                             -y `
                             "$Destination\$Parent\$Folder\$File.mp3"
@@ -89,6 +89,7 @@ function Convert-FLAC2MP3 {
         # Cleanup used Variables
         Write-Verbose "Cleaning up used Variables..."
         Remove-Variable -Name "Destination" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "SrcExt" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Files" -ErrorAction SilentlyContinue
         Remove-Variable -Name "CurrentDir" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Parent" -ErrorAction SilentlyContinue
