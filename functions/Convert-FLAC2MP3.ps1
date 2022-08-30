@@ -36,14 +36,17 @@ function Convert-FLAC2MP3 {
         # Strip last "\" from $Destination, if included
         $Destination = $Destination.TrimEnd('\')
 
+        # Create var for File Extension
+        $Ext = ".flac"
+
         # Check for .mp4 files in the current directory, if not break
-        Write-Verbose "Check for .flac files in the current directory..."
-        if ( ! ( Get-ChildItem -Recurse "*.flac" ) ) {
-            Write-Error "No .flac files found in current directory!"
+        Write-Verbose "Check for .$Ext files in the current directory..."
+        if ( ! ( Get-ChildItem -Recurse -Filter "*.$Ext" ) ) {
+            Write-Error "No .$Ext files found in current directory!"
             Break
         } else {
-            Write-Verbose "Building a list of .flac files in the current directory..."
-            $Files = $(Get-ChildItem -Include *.flac -Recurse).BaseName
+            Write-Verbose "Building a list of .$Ext files in the current directory..."
+            $Files = $(Get-ChildItem -Include *.$Ext -Recurse).BaseName
             Write-Verbose "Creating Variables based on current path..."
             $CurrentDir = $(Split-Path -Path (Get-Location) -Parent)
             $Parent = $(Split-Path -Path $CurrentDir -Leaf)
@@ -70,7 +73,7 @@ function Convert-FLAC2MP3 {
             try {
                 ffmpeg.exe  -loglevel fatal `
                             -stats `
-                            -i "$File.flac" `
+                            -i "$File.$Ext" `
                             -ab 320k `
                             -y `
                             "$Destination\$Parent\$Folder\$File.mp3"
