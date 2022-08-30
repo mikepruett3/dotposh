@@ -52,13 +52,13 @@ function Convert-FLAC2MP3 {
         # Create $Destination\$Parent Directory if it does not exist
         if ( ! (Test-Path $Destination\$Parent -PathType 'Container') ) {
             Write-Verbose "Creating $Destination\$Parent Directory, as it did not exist!"
-            New-Item -Path $Destination\$Parent -ItemType Directory
+            New-Item -Path $Destination\$Parent -ItemType Directory | Out-Null
         }
 
         # Create $Destination\$Parent\$Folder Directory if it does not exist
         if ( ! (Test-Path $Destination\$Parent\$Folder -PathType 'Container') ) {
             Write-Verbose "Creating $Destination\$Parent\$Folder Directory, as it did not exist!"
-            New-Item -Path $Destination\$Parent\$Folder -ItemType Directory
+            New-Item -Path $Destination\$Parent\$Folder -ItemType Directory | Out-Null
         }
 
         # Convert/Resize each .flac file
