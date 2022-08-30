@@ -24,7 +24,7 @@ function Convert-FLAC2MP3 {
         [string]
         $Destination
     )
-    
+
     begin {
         # Check if ffmpeg.exe is in the path, if not break
         Write-Verbose "Check if ffmpeg.exe is in the path..."
@@ -41,10 +41,26 @@ function Convert-FLAC2MP3 {
         } else {
             Write-Verbose "Building a list of .flac files in the current directory..."
             $Files = $(Get-ChildItem -Include *.flac -Recurse).BaseName
+            Write-Verbose "Creating Variables based on current path..."
+            $CurrentDir = $(Split-Path -Path (Get-Location) -Parent)
+            $Parent = $(Split-Path -Path $CurrentDir -Leaf)
+            $Folder = $(Split-Path -Path (Get-Location) -Leaf)
         }
     }
-    
+
     process {
+        # Create $Destination\$Parent Directory if it does not exist
+        if ( ! (Test-Path $Destination\$Parent -PathType 'Container') ) {
+            Write-Verbose "Creating $Destination\$Parent Directory, as it did not exist!"
+            New-Item -Path $Destination\$Parent -ItemType Directory
+        }
+
+        # Create $Destination\$Parent\$Folder Directory if it does not exist
+        if ( ! (Test-Path $Destination\$Parent\$Folder -PathType 'Container') ) {
+            Write-Verbose "Creating $Destination\$Parent\$Folder Directory, as it did not exist!"
+            New-Item -Path $Destination\$Parent\$Folder -ItemType Directory
+        }
+
         # Convert/Resize each .flac file
         foreach ($File in $Files) {
             Write-Verbose "Processing file $File!"
@@ -54,7 +70,7 @@ function Convert-FLAC2MP3 {
                             -i "$File.flac" `
                             -ab 320k `
                             -y `
-                            "$Destination\$File.mp3"
+                            "$Destination\$Parent\$Folder\$File.mp3"
             }
             catch {
                 Write-Error "Unable to process file $File!"
@@ -62,12 +78,15 @@ function Convert-FLAC2MP3 {
             }
         }
     }
-    
+
     end {
-        # Cleanup
+        # Cleanup used Variables
         Write-Verbose "Cleaning up used Variables..."
-        Clear-Variable -Name "Destination" -Scope Global -ErrorAction SilentlyContinue
-        Clear-Variable -Name "Files" -Scope Global -ErrorAction SilentlyContinue
-        Clear-Variable -Name "File" -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Destination" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Files" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "CurrentDir" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Parent" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Folder" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "File" -ErrorAction SilentlyContinue
     }
 }
