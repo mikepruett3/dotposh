@@ -37,7 +37,7 @@ function Convert-FLAC2MP3 {
         $Destination = $Destination.TrimEnd('\')
 
         # Create var for File Extension
-        $Ext = ".flac"
+        $Ext = "flac"
 
         # Check for .mp4 files in the current directory, if not break
         Write-Verbose "Check for .$Ext files in the current directory..."
