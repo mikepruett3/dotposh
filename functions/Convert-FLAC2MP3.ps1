@@ -33,6 +33,9 @@ function Convert-FLAC2MP3 {
             Break
         }
 
+        # Strip last "\" from $Destination, if included
+        $Destination = $Destination.TrimEnd('\')
+
         # Check for .mp4 files in the current directory, if not break
         Write-Verbose "Check for .flac files in the current directory..."
         if ( ! ( Get-ChildItem -Recurse "*.flac" ) ) {
