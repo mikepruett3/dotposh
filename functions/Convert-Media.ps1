@@ -73,10 +73,10 @@ function Convert-Media {
         switch ($Type) {
             'flac' { $Options = @("-c:a","flac","-c:v","copy") }
             'm4a' { $Options = @("-c:a","aac","-ar","44100","-b:a","320k","-c:v","copy") }
-            'mp3' { $Options = @("-c:a","mp3","-abr","320k","-c:v","copy") }
+            'mp3' { $Options = @("-c:a","mp3","-ar","44100","-abr","320k","-c:v","copy") }
             'mp4' { $Options = @("-c:a","aac","-c:v","mpeg4") }
-            'oga' { $Options = @("-c:a","libvorbis","-c:v","copy") }
-            'ogg' { $Options = @("-c:a","libvorbis","-c:v","copy") }
+            'oga' { $Options = @("-c:a","libvorbis","-ar","44100","-b:a","320k","-c:v","copy") }
+            'ogg' { $Options = @("-c:a","libvorbis","-ar","44100","-b:a","320k","-c:v","copy") }
             'ogv' { $Options = @("-c:a","libvorbis","-c:v","libtheora") }
             Default {}
         }
