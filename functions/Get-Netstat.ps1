@@ -55,7 +55,7 @@ function Get-Netstat {
         #If no Parameters are set, then Collect all of the Network TCP Connections
         if ($PSBoundParameters.Count -eq 0) {
             $TCPConnections = Get-NetTCPConnection -ErrorAction SilentlyContinue
-            $UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue
+            #$UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue
 
             $Sort = "LocalAddress"
         }
