@@ -55,7 +55,7 @@ function Get-Netstat {
         #If no Parameters are set, then Collect all of the Network TCP Connections
         if ($PSBoundParameters.Count -eq 0) {
             $TCPConnections = Get-NetTCPConnection -ErrorAction SilentlyContinue
-            #$UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue
+            $UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue
 
             $Sort = "LocalAddress"
         }
@@ -65,8 +65,8 @@ function Get-Netstat {
             Write-Verbose "Building an array with TCP Connections, matching State of Listening"
             $TCPConnections = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue
 
-            Write-Verbose "Building an array with UDP Connections, matching State of Listening"
-            $UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue #| `
+            #Write-Verbose "Building an array with UDP Connections, matching State of Listening"
+            #$UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue #| `
             #Where-Object { $_.LocalAddress -match '0.0.0.0|127.0.0.1'}
 
             $Sort = "LocalAddress"
