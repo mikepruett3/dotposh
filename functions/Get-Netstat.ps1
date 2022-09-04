@@ -52,6 +52,14 @@ function Get-Netstat {
     }
 
     process {
+        #If no Parameters are set, then Collect all of the Network TCP Connections
+        if ($PSBoundParameters.Count -eq 0) {
+            $TCPConnections = Get-NetTCPConnection -ErrorAction SilentlyContinue
+            $UDPConnections = Get-NetUDPEndpoint -ErrorAction SilentlyContinue
+
+            $Sort = "LocalAddress"
+        }
+
         #If $Listen is True, then Collect all of the Network TCP Connections into a Variable based on the State = Listen
         if ($Listen) {
             Write-Verbose "Building an array with TCP Connections, matching State of Listening"
@@ -113,8 +121,6 @@ function Get-Netstat {
             $Temp = [PSCustomObject]@{
                 LocalAddress = $Connection.LocalAddress
                 LocalPort = $Connection.LocalPort
-                RemoteAddress = $Connection.RemoteAddress
-                #RemoteAddress = (Resolve-DNSName -Name $Connection.RemoteAddress -ErrorAction SilentlyContinue).NameHost
                 RemotePort = $Connection.RemotePort
                 Protocol = "TCP"
                 State = $Connection.State
@@ -123,6 +129,13 @@ function Get-Netstat {
                 CreationTime = $Connection.CreationTime
                 OffloadState = $Connection.OffloadState
             }
+
+            if (Resolve-DNSName -Name $Connection.RemoteAddress -DnsOnly -ErrorAction SilentlyContinue) {
+                $Temp |  Add-Member -MemberType NoteProperty -Name 'RemoteAddress' -Value (Resolve-DNSName -Name $Connection.RemoteAddress -DnsOnly).NameHost
+            } else {
+                $Temp |  Add-Member -MemberType NoteProperty -Name 'RemoteAddress' -Value $Connection.RemoteAddress
+            }
+
             $Results += $Temp
         }
 
@@ -148,7 +161,8 @@ function Get-Netstat {
         Write-Verbose "Returing the Results..."
         Return $Results | `
         Select-Object Protocol,LocalAddress,LocalPort,RemoteAddress,RemotePort,ProcessName,ID | `
-        Sort-Object -Property $Sort | `
+        Sort-Object -Property @{Expression = "Protocol"}, `
+        @{Expression = $Sort} | `
         Format-Table -AutoSize -Wrap
     }
 
