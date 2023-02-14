@@ -97,10 +97,10 @@ Return
 ;========== MacOS "Command-M"-like Hotkey ==========
 ; Lifted from RamValli's post - https://stackoverflow.com/questions/42918534/autohotkey-script-to-toggle-minimize-maximize-window
 ; WIN + M
-#M::
-WinGet, WindowID, ID, A
-WinGet, WindowStatus, MinMax, ahk_id %WindowID%
-WinMinimize, ahk_id %WindowID%
+;#M::
+;WinGet, WindowID, ID, A
+;WinGet, WindowStatus, MinMax, ahk_id %WindowID%
+;WinMinimize, ahk_id %WindowID%
 ;DetectHiddenWindows, On
 ;If (!WindowID)
 ;{
@@ -108,21 +108,21 @@ WinMinimize, ahk_id %WindowID%
 ;} Else {
 ;    MinMaxWindow(WindowID)
 ;}
-Return
+;Return
 
 ;========== MacOS "Command-Q"-like Hotkey ==========
 ; WIN + Q
-#Q::
-WinGet, WindowID, ID, A
-WinGet, WindowStatus, MinMax, ahk_id %WindowID%
-WinClose, ahk_id %WindowID%
-Return
+;#Q::
+;WinGet, WindowID, ID, A
+;WinGet, WindowStatus, MinMax, ahk_id %WindowID%
+;WinClose, ahk_id %WindowID%
+;Return
 
 ;========== TextOnlyPaste Hotkey ==========
 ; CTRL + SHIFT + V
-^+V::
-TextOnlyPaste()
-Return
+;^+V::
+;TextOnlyPaste()
+;Return
 
 ;========== Hide/Show Taskbar Hotkey ==========
 ; CTRL + SHIFT + F12
@@ -139,15 +139,15 @@ Return
 
 ;========== Transparency toggle, Scroll Lock ==========
 ; https://www.reddit.com/r/AutoHotkey/comments/lvzqlx/share_your_most_useful_ahk_scripts_my_huge/
-sc046::
-toggle:=!toggle
-If toggle=1
-{
-    WinSet, Transparent, 150, A
-} Else {
-    WinSet, Transparent, OFF, A
-}
-Return
+;sc046::
+;toggle:=!toggle
+;If toggle=1
+;{
+;    WinSet, Transparent, 150, A
+;} Else {
+;    WinSet, Transparent, OFF, A
+;}
+;Return
 
 ;========== Temporarily Suspend AutoHotkey Hotkey ==========
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
