@@ -19,7 +19,7 @@ SendMode, Input            ; Reccomended for new scripts due to its superior spe
 ;}
 
 ;========== Include Custom AutoHotKey Script ==========
-;#Include, %A_WorkingDir%\Custom\Custom.ahk
+#Include, %A_WorkingDir%\Custom\Custom.ahk
 
 ;========== Text Replacement Hotkeys ==========
 :*:omw::
