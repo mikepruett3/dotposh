@@ -1,4 +1,4 @@
-function Move-eBooks {
+function Move-Media {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
