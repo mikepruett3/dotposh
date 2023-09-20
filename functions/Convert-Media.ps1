@@ -107,13 +107,14 @@ function Convert-Media {
                 #            $Options `
                 #            -y `
                 #            "$Destination\$Parent\$Folder\$File.$Type"
-                Start-Process   -FilePath "ffmpeg.exe" -ArgumentList `
-                                "-loglevel fatal", `
-                                "-stats", `
-                                "-i $File.$Ext", `
-                                "$Options", `
-                                "-y", `
-                                "$Destination\$Parent\$Folder\$File.$Type"
+                Start-Process -FilePath "ffmpeg.exe" `
+                -ArgumentList `
+                "-loglevel fatal",`
+                "-stats",`
+                "-i $File.$Ext",`
+                "$Options",`
+                "-y",`
+                "$Destination\$Parent\$Folder\$File.$Type"
             #}
             #catch
             #{
