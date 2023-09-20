@@ -98,8 +98,8 @@ function Convert-Media {
         # Convert each file to the specified destination format
         foreach ($File in $Files) {
             Write-Verbose "Converting file $File to format $Type!"
-            try
-            {
+            #try
+            #{
                 #ffmpeg.exe  -loglevel fatal `
                 #            -stats `
                 #            -i `
@@ -114,12 +114,12 @@ function Convert-Media {
                                 $Options `
                                 -y `
                                 "$Destination\$Parent\$Folder\$File.$Type"
-            }
-            catch
-            {
-                Write-Error "Unable to process file $File!"
-                Break
-            }
+            #}
+            #catch
+            #{
+            #    Write-Error "Unable to process file $File!"
+            #    Break
+            #}
         }
     }
 
