@@ -13,7 +13,7 @@ function Convert-MAMEXMLDAT {
     .EXAMPLE
         > Convert-MAMEXMLDAT -file C:\mydata.dat
     #>
-    
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
@@ -21,7 +21,7 @@ function Convert-MAMEXMLDAT {
         [string]
         $file
     )
-    
+
     begin {
         # Import the file as an XML object
         Write-Verbose "Importing file as an XML formatted object..."
@@ -34,14 +34,20 @@ function Convert-MAMEXMLDAT {
         Write-Verbose "Creating variables..."
         $XMLPath = "/datafile/game"
     }
-    
+
     process {
         # Generate Output
         Write-Verbose "Converting MAME XML formatted .DAT file output to an object..."
-        $Result = Select-Xml -Xml ${XML} -XPath ${XMLPath} | Select-Object -ExpandProperty Node | Select-Object Name, Description
+        $Result =   Select-Xml -Xml ${XML} -XPath ${XMLPath} |
+                    Select-Object -ExpandProperty Node |
+                    Select-Object Name, Description |
+                    Where-Object { $_.category -eq "Games" } |
+                    Where-Object { $_.Name -like "*(USA)*" } |
+                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" (USA)","") }} |
+                    Sort-Object -Property Name
         Return $Result
     }
-    
+
     end {
         # Cleanup leftover variables
         Write-Verbose "Cleaning up unused variables..."
