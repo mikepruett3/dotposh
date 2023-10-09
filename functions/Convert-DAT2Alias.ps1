@@ -23,23 +23,34 @@ function Convert-DAT2Alias {
         [string]
         $File
     )
-    
+
     begin {
-        # Ingest .dat file to $XML
-        $XML = [xml](Get-Content $File)
+        # Import the file as an XML object
+        Write-Verbose "Importing file as an XML formatted object..."
+        try { $XML = [xml](Get-Content ${File}) }
+        catch {
+            Write-Error "Unable to import file as XML object!!"
+        }
+
+        # Creating variables
+        Write-Verbose "Creating variables..."
+        $XMLPath = "/datafile/game"
     }
-    
+
     process {
         # Generate Output
         Write-Verbose "Converting MAME XML formatted .DAT file output to an object..."
-        $Result = $XML.datafile.game | Select @{ Name="ROM"; Expression = { $_.rom.name.Substring(0,$_.rom.name.Length-4) }}, name
+        #$Result = $XML.datafile.game |
+        $Result = Select-Xml -Xml ${XML} -XPath ${XMLPath} |
+                    Select-Object @{ Name="ROM"; Expression = { $_.rom.name.Substring(0,$_.rom.name.Length-4) }}, Name
         Return $Result
     }
-    
+
     end {
         # Clear Used Variables
-        Remove-Variable -Name "File"
-        Remove-Variable -Name "XML"
-        Remove-Variable -Name "Result"
+        Remove-Variable -Name "File" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "XML" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "XMLPath" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Result" -ErrorAction SilentlyContinue
     }
 }
