@@ -66,7 +66,7 @@ function Convert-MAMEXMLDAT {
                     Where-Object { $_.Name -like "*${SearchRegion}*" } |
                     Where-Object { $_.Name -notlike "*(Rev*)*" } |
                     Select-Object Name, `
-                        @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","").Replace(($FilterRegion -join "|" ),"") }} |
+                        @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
                     Sort-Object -Property Name
         #Where-Object { $_.Name -notmatch ( $FilterRegion -join "|" ) } |
         Return $Result
