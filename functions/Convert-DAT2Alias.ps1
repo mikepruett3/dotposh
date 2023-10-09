@@ -40,7 +40,8 @@ function Convert-DAT2Alias {
     process {
         # Generate Output
         Write-Verbose "Converting MAME XML formatted .DAT file output to an object..."
-        $Result = $XML.datafile.game
+        $Result = $XML.datafile.game |
+                    Where-Object { $_.category -eq "Games" }
         #$Result = Select-Xml -Xml ${XML} -XPath ${XMLPath} |
         #            Select-Object @{ Name="ROM"; Expression = { $_.rom.name.Substring(0,$_.rom.name.Length-4) }}, Name
         Return $Result
