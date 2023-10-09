@@ -43,7 +43,8 @@ function Convert-MAMEXMLDAT {
         switch ($Region) {
             USA {
                 $SearchRegion = "(USA)"
-                $FilterRegion = @("*Fr*","*De*","*Es*","*It*","*Nl*","*Sv*","*No*","*Da*","*Fi*","*Pt*")
+                #$FilterRegion = @("*Fr*","*De*","*Es*","*It*","*Nl*","*Sv*","*No*","*Da*","*Fi*","*Pt*")
+                $FilterRegion = @("Fr","De")
             }
             EU {
                 $SearchRegion = "(Europe)"
@@ -65,7 +66,7 @@ function Convert-MAMEXMLDAT {
                     Where-Object { $_.category -eq "Games" } |
                     Where-Object { $_.Name -like "*${SearchRegion}*" } |
                     Where-Object { $_.Name -notlike "*(Rev*)*" } |
-                    Where-Object { $_.Name -like $FilterRegion } |
+                    Where-Object { $_.Name -match ( $FilterRegion -join "|" ) } |
                     Select-Object Name, `
                         @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
                     Sort-Object -Property Name
