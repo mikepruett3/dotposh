@@ -38,12 +38,12 @@ function Convert-MAMEXMLDAT {
     process {
         # Generate Output
         Write-Verbose "Converting MAME XML formatted .DAT file output to an object..."
-        $Result =   Select-Xml -Xml ${XML} -XPath ${XMLPath} |
-                    Select-Object -ExpandProperty Node |
-                    Select-Object Name, Description |
-                    Where-Object { $_.category -eq "Games" } |
-                    Where-Object { $_.Name -like "*(USA)*" } |
-                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" (USA)","") }} |
+        $Result =   Select-Xml -Xml ${XML} -XPath ${XMLPath} | `
+                    Select-Object -ExpandProperty Node | `
+                    Select-Object Name, Description | `
+                    Where-Object { $_.category -eq "Games" } | `
+                    Where-Object { $_.Name -like "*(USA)*" } | `
+                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" (USA)","") }} | `
                     Sort-Object -Property Name
         Return $Result
     }
