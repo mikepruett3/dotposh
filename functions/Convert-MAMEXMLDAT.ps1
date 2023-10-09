@@ -65,7 +65,7 @@ function Convert-MAMEXMLDAT {
                     Where-Object { $_.category -eq "Games" } |
                     Where-Object { $_.Name -like "*${SearchRegion}*" } |
                     Where-Object { $_.Name -notlike "*(Rev*)*" } |
-                    Where-Object { $_.Name -contains $FilterRegion } |
+                    Where-Object { $_.Name -in $FilterRegion } |
                     Select-Object Name, `
                         @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
                     Sort-Object -Property Name
