@@ -63,7 +63,9 @@ function Convert-MAMEXMLDAT {
                     Select-Object -ExpandProperty Node |
                     Where-Object { $_.category -eq "Games" } |
                     Where-Object { $_.Name -like "*${SearchRegion}*" } |
-                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
+                    Select-Object Name, `
+                        @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }}, `
+                        @{name="ROM";expression={ $_.rom.name.Substring(0,$_.rom.name.Length-4) }} |
                     Sort-Object -Property Name
         Return $Result
     }
