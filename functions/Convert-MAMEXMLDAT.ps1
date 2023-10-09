@@ -43,7 +43,7 @@ function Convert-MAMEXMLDAT {
         switch ($Region) {
             USA {
                 $SearchRegion = "(USA)"
-                $FilterRegion = "*Fr*","*De*","*Es*","*It*","*Nl*","*Sv*","*No*","*Da*","*Fi*","*Pt*"
+                $FilterRegion = @("*Fr*","*De*","*Es*","*It*","*Nl*","*Sv*","*No*","*Da*","*Fi*","*Pt*")
             }
             EU {
                 $SearchRegion = "(Europe)"
