@@ -8,10 +8,12 @@ function Convert-MAMEXMLDAT {
     .NOTES
         Tested against the .dat files from FBNeo project
             https://github.com/libretro/FBNeo/tree/master/dats
-    .PARAMETER file
+    .PARAMETER File
         Path to the .DAT file containing the dataset to import.
+    .PARAMETER Region
+        Region Name, used to Filter results. (i.e. USA, JAP, EU, etc..)
     .EXAMPLE
-        > Convert-MAMEXMLDAT -file C:\mydata.dat
+        > Convert-MAMEXMLDAT -File C:\mydata.dat -Region USA
     #>
 
     [CmdletBinding()]
@@ -19,13 +21,16 @@ function Convert-MAMEXMLDAT {
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [ValidateScript({Test-Path -Path $_ -PathType 'Leaf'})]
         [string]
-        $file
+        $File,
+        [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
+        [string]
+        $Region
     )
 
     begin {
         # Import the file as an XML object
         Write-Verbose "Importing file as an XML formatted object..."
-        try { $XML = [xml](Get-Content ${file}) }
+        try { $XML = [xml](Get-Content ${File}) }
         catch {
             Write-Error "Unable to import file as XML object!!"
         }
@@ -33,6 +38,22 @@ function Convert-MAMEXMLDAT {
         # Creating variables
         Write-Verbose "Creating variables..."
         $XMLPath = "/datafile/game"
+
+        # Setting $SearchRegion text based on selected $Region
+        switch ($Region) {
+            USA {
+                $SearchRegion = "(USA)"
+            }
+            EU {
+                $SearchRegion = "(Europe)"
+            }
+            JAP {
+                $SearchRegion = "(Japan)"
+            }
+            Default {
+                $SearchRegion = "(USA)"
+            }
+        }
     }
 
     process {
@@ -41,8 +62,8 @@ function Convert-MAMEXMLDAT {
         $Result = Select-Xml -Xml ${XML} -XPath ${XMLPath} |
                     Select-Object -ExpandProperty Node |
                     Where-Object { $_.category -eq "Games" } |
-                    Where-Object { $_.Name -like "*(USA)*" } |
-                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" (USA)","") }} |
+                    Where-Object { $_.Name -like "*${SearchRegion}*" } |
+                    Select-Object Name, @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
                     Sort-Object -Property Name
         Return $Result
     }
@@ -50,9 +71,11 @@ function Convert-MAMEXMLDAT {
     end {
         # Cleanup leftover variables
         Write-Verbose "Cleaning up unused variables..."
-        Remove-Variable file
-        Remove-Variable XML
-        Remove-Variable XMLPath
-        Remove-Variable Result
+        Remove-Variable -Name "File" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "XML" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "XMLPath" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Region" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "SearchRegion" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Result" -ErrorAction SilentlyContinue
     }
 }
