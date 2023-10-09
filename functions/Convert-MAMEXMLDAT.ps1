@@ -69,7 +69,7 @@ function Convert-MAMEXMLDAT {
                         @{name="Description"; expression={ $_.Description.Replace(" ${SearchRegion}","") }} |
                     Sort-Object -Property Name
         #Where-Object { $_.Name -notmatch ( $FilterRegion -join "|" ) } |
-        $Result = $Result.Replace($FilterRegion,"")
+        $Result = $Result -replace $FilterRegion,""
         Return $Result
     }
 
