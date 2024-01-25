@@ -91,6 +91,11 @@ If WinActive("ahk_exe Obsidian.exe")
     SendInput, ``````javascript
     SendInput, {Enter}
     Return
+
+    :*:hml::
+    SendInput, ``````html
+    SendInput, {Enter}
+    Return
 }
 
 ;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
