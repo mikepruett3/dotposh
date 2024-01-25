@@ -78,7 +78,7 @@ If WinActive("ahk_exe Obsidian.exe")
     Return
 
     :*:yml::
-    SendInput, ``````jyaml
+    SendInput, ``````yaml
     SendInput, {Enter}
     Return
 
@@ -87,7 +87,7 @@ If WinActive("ahk_exe Obsidian.exe")
     SendInput, {Enter}
     Return
 
-    :*:js::
+    :*:jas::
     SendInput, ``````javascript
     SendInput, {Enter}
     Return
