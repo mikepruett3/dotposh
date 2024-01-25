@@ -66,6 +66,31 @@ If WinActive("ahk_exe Obsidian.exe")
     SendInput, ``````PowerShell
     SendInput, {Enter}
     Return
+
+    :*:bsh::
+    SendInput, ``````bash
+    SendInput, {Enter}
+    Return
+
+    :*:cmd::
+    SendInput, ``````cmd
+    SendInput, {Enter}
+    Return
+
+    :*:yml::
+    SendInput, ``````jyaml
+    SendInput, {Enter}
+    Return
+
+    :*:jsn::
+    SendInput, ``````json
+    SendInput, {Enter}
+    Return
+
+    :*:js::
+    SendInput, ``````javascript
+    SendInput, {Enter}
+    Return
 }
 
 ;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
