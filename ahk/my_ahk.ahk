@@ -63,7 +63,9 @@ Return
 If WinActive("ahk_exe Obsidian.exe")
 {
     :*:ps::
-    SendInput, ```PowerShell
+    SendInput, `
+    SendInput, `
+    SendInput, `PowerShell
     SendInput, {Enter}
     Return
 }
