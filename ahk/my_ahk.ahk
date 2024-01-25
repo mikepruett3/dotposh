@@ -60,6 +60,14 @@ Return
 safeharbor()
 Return
 
+If WinActive("ahk_exe Obsidian.exe")
+{
+    :*:ps::
+    SendInput, PowerShell
+    SendInput, {Enter}
+    Return
+}
+
 ;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
 ;{
 ;    ;========== New Text File Hotkey ==========
