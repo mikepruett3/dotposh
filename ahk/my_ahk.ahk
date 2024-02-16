@@ -56,6 +56,8 @@ Return
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
 ; WIN + Delete
 #Del::
+SplashTextOn,200,50,AutoHotKeySystem,`nEmpting Trash...
+Sleep, 500
 FileRecycleEmpty
 Return
 
