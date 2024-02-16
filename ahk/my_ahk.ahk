@@ -3,27 +3,11 @@
 ;#Warn                     ; Enable warnings to assist with detecting common errors.
 SendMode, Input            ; Reccomended for new scripts due to its superior speed and reliability.
 
-;========== Run MouseJiggler AutoHotKey Script ==========
-;DetectHiddenWindows, On
-;IfWinNotExist, %A_WorkingDir%\Scripts\MouseJiggler.ahk
-;{
-;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
-;}
-;DetectHiddenWindows, Off
-
-;SystemType := GetChassisType()
-;RunOnSystems := "Portable Laptop Notebook Handheld DockingStation All-in-One Sub-Notebook LunchBox"
-;If InStr(RunOnSystems, SystemType)
-;{
-;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
-;}
-
 ;========== Include Custom AutoHotKey Script ==========
 #Include, %A_WorkingDir%\Custom\Custom.ahk
 
-; Globally Avaliable Hotkeys
-;========== Reload AutoHotkey Hotkey ==========
-; CTRL + R
+;========== Globally Avaliable Hotkeys ==========
+; Reload AutoHotkey Hotkey (CTRL + R)
 ^R::
 SplashTextOn,100,50,AutoHotKeySystem,`nReloading...
 Sleep, 500
@@ -31,8 +15,7 @@ Reload
 SplashTextOff
 Return
 
-;========== Show IP Address Hotkey ==========
-; CTRL + SHIFT + I
+; Show IP Address Hotkey (CTRL + SHIFT + I)
 ^+I::
 SplashTextOn,150,50,IPAddress,Your IP Address:`n%A_IPAddress1%
 Sleep, 1000
@@ -45,9 +28,8 @@ RemoveToolTip:
 ToolTip
 Return
 
-;========== Temporarily Suspend AutoHotkey Hotkey ==========
+; Temporarily Suspend AutoHotkey Hotkey (WIN + ScrollLock)
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
-; WIN + ScrollLock
 #ScrollLock::
 SplashTextOn,200,50,AutoHotKeySystem,`nSuspending Hotkeys...
 Sleep, 500
@@ -55,9 +37,8 @@ Suspend
 SplashTextOff
 Return
 
-;========== Empty Recycle Bin Hotkey ==========
+; Empty Recycle Bin Hotkey (WIN + Delete)
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
-; WIN + Delete
 #Del::
 SplashTextOn,200,50,AutoHotKeySystem,`nEmpting Trash...
 Sleep, 500
@@ -65,9 +46,9 @@ FileRecycleEmpty
 SplashTextOff
 Return
 
-; Hotkeys that work in everything except explorer.exe
+; ========== Hotkeys that work in everything except explorer.exe ==========
 #IfWinNotActive, ahk_exe explorer.exe
-    ;========== Text Replacement Hotkeys ==========
+    ; Text Replacement Hotkeys
     :*:omw::
     SendInput, On My Way{!}
     SendInput, {Space}
@@ -105,7 +86,9 @@ Return
     ::safeharbor::
     safeharbor()
     Return
+#IfWinNotActive
 
+; ========== Hotkeys that only work in Obsidian.exe ==========
 #IfWinActive, ahk_exe Obsidian.exe
     :*:ps::
     SendInput, ``````PowerShell
@@ -141,13 +124,11 @@ Return
     SendInput, ``````html
     SendInput, {Enter}
     Return
+#IfWinActive
 
-; Hotkeys that only work in explorer.exe
-#IfWinActive, ahk_class ExploreWClass
-    ^+t::
-#IfWinActive, ahk_class CabinetWClass
-    ;========== New Text File Hotkey ==========
-    ; CTRL + SHIFT + T
+; ========== Hotkeys that only work in explorer.exe ==========
+#IfWinActive, ahk_exe explorer.exe
+    ; New Text File Hotkey (CTRL + SHIFT + T)
     ^+t::
     Path := GetActiveExplorerPath()
     NoFile = 0
@@ -163,19 +144,34 @@ Return
     FileAppend, ,%Path%\NewTextFile%NoFile%.txt
     Return
 
-    ;========== Show and Hide Hidden Files Hotkey ==========
-    ; CTRL + F2
+    ; Show and Hide Hidden Files Hotkey (CTRL + F2)
     ^F2::
     ToggleHiddenFilesDisplay()
     Return
 
-;    ;========== Move Up a Folder in File Explorer Hotkey ==========
+;    ; Move Up a Folder in File Explorer Hotkey (BackSpace)
 ;    ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
-;    ; BackSpace
 ;    BackSpace::
 ;    Send, !{Up}
 ;    Return
+#IfWinActive
 
+; ---------- Archive ----------
+
+;========== Run MouseJiggler AutoHotKey Script ==========
+;DetectHiddenWindows, On
+;IfWinNotExist, %A_WorkingDir%\Scripts\MouseJiggler.ahk
+;{
+;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
+;}
+;DetectHiddenWindows, Off
+
+;SystemType := GetChassisType()
+;RunOnSystems := "Portable Laptop Notebook Handheld DockingStation All-in-One Sub-Notebook LunchBox"
+;If InStr(RunOnSystems, SystemType)
+;{
+;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
+;}
 
 ;========== MacOS "Command-M"-like Hotkey ==========
 ; Lifted from RamValli's post - https://stackoverflow.com/questions/42918534/autohotkey-script-to-toggle-minimize-maximize-window
