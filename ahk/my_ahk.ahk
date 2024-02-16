@@ -30,6 +30,7 @@ Sleep, 500
 Reload
 SplashTextOff
 Return
+
 ;========== Show IP Address Hotkey ==========
 ; CTRL + SHIFT + I
 ^+I::
@@ -43,6 +44,7 @@ Return
 RemoveToolTip:
 ToolTip
 Return
+
 ;========== Temporarily Suspend AutoHotkey Hotkey ==========
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
 ; WIN + ScrollLock
@@ -52,6 +54,7 @@ Sleep, 500
 Suspend
 SplashTextOff
 Return
+
 ;========== Empty Recycle Bin Hotkey ==========
 ; https://www.maketecheasier.com/favorite-autohotkey-scripts/
 ; WIN + Delete
