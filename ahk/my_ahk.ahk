@@ -21,6 +21,7 @@ SendMode, Input            ; Reccomended for new scripts due to its superior spe
 ;========== Include Custom AutoHotKey Script ==========
 #Include, %A_WorkingDir%\Custom\Custom.ahk
 
+#IfWinNotActive, ahk_exe explorer.exe
 ;========== Text Replacement Hotkeys ==========
 :*:omw::
 SendInput, On My Way{!}
@@ -66,54 +67,55 @@ Return
     SendInput, {Enter}
     Return
 
-;    :*:bsh::
-;    SendInput, ``````bash
-;    SendInput, {Enter}
-;    Return
-;
-;    :*:cmd::
-;    SendInput, ``````cmd
-;    SendInput, {Enter}
-;    Return
-;
-;    :*:yml::
-;    SendInput, ``````yaml
-;    SendInput, {Enter}
-;    Return
-;
-;    :*:jsn::
-;    SendInput, ``````json
-;    SendInput, {Enter}
-;    Return
-;
-;    :*:jas::
-;    SendInput, ``````javascript
-;    SendInput, {Enter}
-;    Return
-;
-;    :*:hml::
-;    SendInput, ``````html
-;    SendInput, {Enter}
-;    Return
+    :*:bsh::
+    SendInput, ``````bash
+    SendInput, {Enter}
+    Return
 
-;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
-;{
-;    ;========== New Text File Hotkey ==========
-;    ; CTRL + SHIFT + T
-;    ^+t::
-;    Path := GetActiveExplorerPath()
-;    NoFile = 0
-;    Loop
-;    {
-;        IfExist, %Path%\NewTextFile%NoFile%.txt
-;        {
-;            NoFile++
-;        } Else {
-;            Break
-;        }
-;    }
-;    FileAppend, ,%Path%\NewTextFile%NoFile%.txt
-;    Return
+    :*:cmd::
+    SendInput, ``````cmd
+    SendInput, {Enter}
+    Return
+
+    :*:yml::
+    SendInput, ``````yaml
+    SendInput, {Enter}
+    Return
+
+    :*:jsn::
+    SendInput, ``````json
+    SendInput, {Enter}
+    Return
+
+    :*:jas::
+    SendInput, ``````javascript
+    SendInput, {Enter}
+    Return
+
+    :*:hml::
+    SendInput, ``````html
+    SendInput, {Enter}
+    Return
+
+#IfWinActive, ahk_class ExploreWClass
+    ^+t::
+#IfWinActive, ahk_class CabinetWClass
+    ;========== New Text File Hotkey ==========
+    ; CTRL + SHIFT + T
+    ^+t::
+    Path := GetActiveExplorerPath()
+    NoFile = 0
+    Loop
+    {
+        IfExist, %Path%\NewTextFile%NoFile%.txt
+        {
+            NoFile++
+        } Else {
+            Break
+        }
+    }
+    FileAppend, ,%Path%\NewTextFile%NoFile%.txt
+    Return
 ;
 ;    ;========== Show and Hide Hidden Files Hotkey ==========
 ;    ; CTRL + F2
