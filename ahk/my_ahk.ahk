@@ -18,9 +18,6 @@ SendMode, Input            ; Reccomended for new scripts due to its superior spe
 ;    Run, %A_WorkingDir%\Scripts\MouseJiggler.ahk
 ;}
 
-;========== Include Custom AutoHotKey Script ==========
-#Include, %A_WorkingDir%\Custom\Custom.ahk
-
 ; Globally Avaliable Hotkeys
 ;========== Reload AutoHotkey Hotkey ==========
 ; CTRL + R
@@ -224,3 +221,6 @@ Return
 ;    WinSet, Transparent, OFF, A
 ;}
 ;Return
+
+;========== Include Custom AutoHotKey Script ==========
+#Include, %A_WorkingDir%\Custom\Custom.ahk
