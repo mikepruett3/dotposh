@@ -61,7 +61,6 @@ safeharbor()
 Return
 
 If WinActive("ahk_exe Obsidian.exe")
-{
     :*:ps::
     SendInput, ``````PowerShell
     SendInput, {Enter}
@@ -96,7 +95,6 @@ If WinActive("ahk_exe Obsidian.exe")
     SendInput, ``````html
     SendInput, {Enter}
     Return
-}
 
 ;#If WinActive("ahk_class ExploreWClass") or WinActive("ahk_class CabinetWClass")
 ;{
