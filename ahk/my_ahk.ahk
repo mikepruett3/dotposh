@@ -22,44 +22,44 @@ SendMode, Input            ; Reccomended for new scripts due to its superior spe
 #Include, %A_WorkingDir%\Custom\Custom.ahk
 
 #IfWinNotActive, ahk_exe explorer.exe
-;========== Text Replacement Hotkeys ==========
-:*:omw::
-SendInput, On My Way{!}
-SendInput, {Space}
-Return
+    ;========== Text Replacement Hotkeys ==========
+    :*:omw::
+    SendInput, On My Way{!}
+    SendInput, {Space}
+    Return
 
-;:*:btw::
-;SendInput, By the way,
-;SendInput, {Space}
-;Return
+    ;:*:btw::
+    ;SendInput, By the way,
+    ;SendInput, {Space}
+    ;Return
 
-;:*:ty::
-;SendInput, Thank You
-;SendInput, {Space}
-;Return
+    ;:*:ty::
+    ;SendInput, Thank You
+    ;SendInput, {Space}
+    ;Return
 
-;:*:np::
-;SendInput, No Problem
-;SendInput, {Space}
-;Return
+    ;:*:np::
+    ;SendInput, No Problem
+    ;SendInput, {Space}
+    ;Return
 
-:*:kk::
-SendInput, ok
-SendInput, {Space}
-Return
+    :*:kk::
+    SendInput, ok
+    SendInput, {Space}
+    Return
 
-:*:ttt::
-FormatTime, Time
-SendRaw, %Time%
-Return
+    :*:ttt::
+    FormatTime, Time
+    SendRaw, %Time%
+    Return
 
-::asshole::
-asshole()
-Return
+    ::asshole::
+    asshole()
+    Return
 
-::safeharbor::
-safeharbor()
-Return
+    ::safeharbor::
+    safeharbor()
+    Return
 
 #IfWinActive, ahk_exe Obsidian.exe
     :*:ps::
