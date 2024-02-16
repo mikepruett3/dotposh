@@ -59,6 +59,7 @@ Return
 SplashTextOn,200,50,AutoHotKeySystem,`nEmpting Trash...
 Sleep, 500
 FileRecycleEmpty
+SplashTextOff
 Return
 
 ; Hotkeys that work in everything except explorer.exe
