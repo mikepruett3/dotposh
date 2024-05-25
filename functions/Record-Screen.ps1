@@ -36,7 +36,6 @@ function Record-Screen {
 
     process {
         Write-Verbose "Recording screen to file $Path!"
-        Write-Output $Path
         $SOUT = "#transcode{vcodec=mp4v,acodec=mp4a,fps=60}:std{access=file,dst=$Path}:display{novideo,noaudio}"
         vlc --screen-fps=60.000000 `
             --screen-left=1920 `
