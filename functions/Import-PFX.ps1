@@ -52,7 +52,7 @@ function Import-PFX {
 
     begin {
         Write-Verbose "Ingesting Credentials of $Credential into variable"
-        $Creds = Get-Credential("$Credentials")
+        $Creds = Get-Credential("$Credential")
 
         # Test Server Connectivity
         #if (!(Test-Connection -Count 1 -ComputerName $Server -Quiet )) {
