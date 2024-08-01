@@ -60,63 +60,66 @@ function Import-PFX {
         #    Break
         #}
 
-        # Create var for File
+        Write-Verbose "Collect Certificate Information from PFX file"
         $FileName = (Get-ChildItem -Path $File).Name
-
-        # Create var(s) based on Certficate Data
         $PFXData = $(Get-PfxData -FilePath $File -Password (ConvertTo-SecureString -String $Passphrase -Force -AsPlainText))
-        $NewSubject = $PFXData.EndEntityCertificates.Subject
-        $NewThumbprint = $PFXData.EndEntityCertificates.Thumbprint
+        $Subject = $PFXData.EndEntityCertificates.Subject
+        $Thumbprint = $PFXData.EndEntityCertificates.Thumbprint
 
-        #Write-Verbose "Creating PSSession Variable - $Session"
-        #$Session = New-PSSession -ComputerName $Server -Credential $Creds
+        Write-Verbose "Creating PSSession Variable"
+        $Session = New-PSSession -ComputerName $Server -Credential $Creds
 
-        #Write-Verbose "Test if Import-PfxCertificate command exists"
-        #Invoke-Command -Session $Session -ScriptBlock {
-        #    Get-Command -Name Import-PfxCertificate | Out-Null
-        #}
+        Write-Verbose "Test if Import-PfxCertificate command exists"
+        Invoke-Command -Session $Session -ScriptBlock {
+            Get-Command -Name Import-PfxCertificate | Out-Null
+        }
     }
 
     process {
-        #Write-Verbose "Create new Certs directory on Remote Server"
-        #Invoke-Command -Session $Session -ScriptBlock {
-        #    New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null
-        #}
+        Write-Output "New $Subject Certificate thumbprint - $Thumbprint"
 
-        # Copy file to C:\Certs\ on Remote Server
-        #Copy-Item $File -Destination C:\Certs\$FileName -ToSession $Session
+        Write-Verbose "Create new Certs directory on $Server"
+        Invoke-Command -Session $Session -ScriptBlock {
+            New-Item -Path "C:\" -Name "Certs" -ItemType "Directory" -ErrorAction SilentlyContinue | Out-Null
+        }
 
-        # Import Certificate on Remote Server
-        #Invoke-Command -Session $Session -ScriptBlock {
-        #    Import-PfxCertificate -FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force -AsPlainText) | Out-Null
-        #}
+        Write-Verbose "Copy file to C:\Certs\ on $Server"
+        Copy-Item $File -Destination C:\Certs\$FileName -ToSession $Session
 
-        #if ($Delete) {
-        #    foreach ( $ExistingCert in (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "$Using:Subject*"}) ) {
-        #        if ($ExistingCert.NotAfter -le (Get-Date)) {
-        #            #Write-Output ""
-        #            #Write-Output "Deleting this Expired Certificate:"
-        #            #Write-Output $ExistingCert.Subject
-        #            #Write-Output $ExistingCert.Thumbprint
-        #            #Write-Output $ExistingCert.NotAfter
-        #            #Write-Output ""
-        #            Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Thumbprint -eq $ExistingCert.Thumbprint} | Remove-Item -Force -Verbose
-        #        }
-        #    }
-        #}
+        Write-Verbose "Importing Certificate on $Server"
+        Invoke-Command -Session $Session -ScriptBlock {
+            Import-PfxCertificate -FilePath C:\Certs\$Using:FileName Cert:\LocalMachine\My -Password (ConvertTo-SecureString -String $Using:Passphrase -Force -AsPlainText) | Out-Null
+        }
+
+        if ($Delete) {
+            Invoke-Command -Session $Session -ScriptBlock {
+                foreach ( $ExistingCert in (Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Subject -like "$Using:Subject*"}) ) {
+                    if ($ExistingCert.Thumbprint -ne $Using:Thumbprint) {
+                        #Write-Output ""
+                        Write-Output "Deleting this Expired Certificate:"
+                        Write-Output $ExistingCert.Subject
+                        Write-Output $ExistingCert.Thumbprint
+                        Write-Output ""
+                        Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object {$_.Thumbprint -eq $ExistingCert.Thumbprint} | Remove-Item -Force -Verbose
+                    }
+                }
+            }
+        }
     }
 
     end {
-        #Write-Verbose "Removing PSSession Variable"
-        #Remove-PSSession -Session $Session
+        Write-Verbose "Removing PSSession Variable"
+        Remove-PSSession -Session $Session
 
-        # Cleanup
         Write-Verbose "Cleaning up used Variables"
         Remove-Variable -Name "Server" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Credentials" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Creds" -ErrorAction SilentlyContinue
         Remove-Variable -Name "File" -ErrorAction SilentlyContinue
         Remove-Variable -Name "FileName" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "PFXData" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Subject" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Thumbprint" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Passphrase" -ErrorAction SilentlyContinue
         Remove-Variable -Name "ExistingCert" -ErrorAction SilentlyContinue
     }
