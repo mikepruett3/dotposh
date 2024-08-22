@@ -24,12 +24,14 @@ function Import-PFX {
         interpreted character. (i.e. " will need to be escaped, like "")
     .PARAMETER Delete
         If switch included, all matching old & expired certificates will be deleted
+    .PARAMETER RDS
+        If switch included, will import this PFX Certificate for the RDS Deployment Certificate
     .EXAMPLE
         > Import-PFX -Server myserver -Credential mycreds@example.com -File .\mycert.pfx -Passphrase mypass
     .NOTES
         Author: Mike Pruett
         Date: Feburary 3rd, 2022
-        Updated: August 1st, 2024
+        Updated: August 22st, 2024
     #>
     [CmdletBinding()]
     param (
@@ -47,7 +49,9 @@ function Import-PFX {
         [string]
         $Passphrase,
         [switch]
-        $Delete
+        $Delete,
+        [switch]
+        $RDS
     )
 
     begin {
@@ -105,6 +109,17 @@ function Import-PFX {
                 }
             }
         }
+
+        if ($RDS) {
+            Invoke-Command -Session $Session -ScriptBlock {
+                foreach ($Role in @('RDRedirector','RDGateway','RDPublishing','RDWebAccess')) {
+                    Set-RDCertificate -Role $Role `
+                    -ImportPath C:\Certs\$Using:FileName `
+                    -Password (ConvertTo-SecureString -String $Using:Passphrase -Force -AsPlainText) `
+                    -ConnectionBroker (Get-RDServer -Role "RDS-CONNECTION-BROKER").Server
+                }
+            }
+        }
     }
 
     end {
@@ -122,5 +137,7 @@ function Import-PFX {
         Remove-Variable -Name "Thumbprint" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Passphrase" -ErrorAction SilentlyContinue
         Remove-Variable -Name "ExistingCert" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "Delete" -ErrorAction SilentlyContinue
+        Remove-Variable -Name "RDS" -ErrorAction SilentlyContinue
     }
 }
