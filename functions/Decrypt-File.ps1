@@ -69,4 +69,5 @@ function Decrypt-File {
         Remove-Variable -Name "Recipient" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Passphrase" -ErrorAction SilentlyContinue
         Remove-Variable -Name "Destination" -ErrorAction SilentlyContinue
+    }
 }
