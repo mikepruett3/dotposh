@@ -59,7 +59,6 @@ function Decrypt-File {
             Write-Error "Unable to decrypt $Path!"
             Break
         }
-
     }
 
     end {
