@@ -1,4 +1,4 @@
-function Decrypt-File {
+function Decrypt-OneFile {
     <#
     .SYNOPSIS
         Decrypt a PGP/GPG encrypted file
