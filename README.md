@@ -1,3 +1,5 @@
+> NOTE: No longer updating this, as I have moved most of my PowerShell customizations to my dotfiles repo...
+
 # Installation:
 
 From Command Line
